@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "722615212666",
+    "project_id": "marketsakh-ad3a8",
+    "storage_bucket": "marketsakh-ad3a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722615212666:android:504e019305283707c6b9c3",
+        "android_client_info": {
+          "package_name": "com.mycompany.sakhmarket"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUz2nUMKCQFb4FjJWzQ_m5gKxfCEERQdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
