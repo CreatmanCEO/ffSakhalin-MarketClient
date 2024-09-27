@@ -37,7 +37,7 @@ class _CartWidgetState extends State<CartWidget> {
     super.initState();
     _model = createModel(context, () => CartModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -50,9 +50,7 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
@@ -75,11 +73,11 @@ class _CartWidgetState extends State<CartWidget> {
                       if (!snapshot.hasData) {
                         return Center(
                           child: SizedBox(
-                            width: 50.0,
-                            height: 50.0,
+                            width: 60.0,
+                            height: 60.0,
                             child: SpinKitPulse(
                               color: FlutterFlowTheme.of(context).primary,
-                              size: 50.0,
+                              size: 60.0,
                             ),
                           ),
                         );
@@ -106,67 +104,71 @@ class _CartWidgetState extends State<CartWidget> {
                               ))
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 15.0),
+                                      0.0, 25.0, 0.0, 0.0),
                                   child: Stack(
                                     alignment: AlignmentDirectional(0.0, 0.0),
                                     children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(0.0, 1.0),
+                                            child: Text(
+                                              'Корзина',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 20.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                       Align(
                                         alignment:
                                             AlignmentDirectional(0.0, 0.0),
                                         child: Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 25.0, 16.0, 1.0),
+                                                  16.0, 0.0, 16.0, 0.0),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
                                             children: [
-                                              if (widget!.back)
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 16.0, 0.0),
-                                                  child: FlutterFlowIconButton(
-                                                    borderColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .primary,
-                                                    borderRadius: 15.0,
-                                                    borderWidth: 2.0,
-                                                    buttonSize: 40.0,
-                                                    icon: Icon(
-                                                      Icons
-                                                          .arrow_back_ios_sharp,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary,
-                                                      size: 25.0,
-                                                    ),
-                                                    onPressed: () async {
-                                                      context.safePop();
-                                                    },
-                                                  ),
+                                              FlutterFlowIconButton(
+                                                borderColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                borderRadius: 15.0,
+                                                borderWidth: 2.0,
+                                                buttonSize: 40.0,
+                                                fillColor: Color(0x7EF1F4F8),
+                                                icon: Icon(
+                                                  Icons.arrow_back_ios_sharp,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primary,
+                                                  size: 25.0,
                                                 ),
+                                                onPressed: () async {
+                                                  context.safePop();
+                                                  FFAppState()
+                                                      .currentUserAdress = null;
+                                                  safeSetState(() {});
+                                                },
+                                              ),
                                             ],
                                           ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment:
-                                            AlignmentDirectional(0.0, 0.0),
-                                        child: Text(
-                                          'Корзина',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Montserrat',
-                                                fontSize: 20.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w500,
-                                              ),
                                         ),
                                       ),
                                     ],
@@ -198,13 +200,13 @@ class _CartWidgetState extends State<CartWidget> {
                                         if (!snapshot.hasData) {
                                           return Center(
                                             child: SizedBox(
-                                              width: 50.0,
-                                              height: 50.0,
+                                              width: 60.0,
+                                              height: 60.0,
                                               child: SpinKitPulse(
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .primary,
-                                                size: 50.0,
+                                                size: 60.0,
                                               ),
                                             ),
                                           );
@@ -379,7 +381,7 @@ class _CartWidgetState extends State<CartWidget> {
                                                                                           onTap: () async {
                                                                                             await listItem.reference.delete();
                                                                                             FFAppState().removeFromProductInCart(listItem.product!);
-                                                                                            setState(() {});
+                                                                                            safeSetState(() {});
                                                                                           },
                                                                                           child: Icon(
                                                                                             Icons.close_sharp,
@@ -397,6 +399,7 @@ class _CartWidgetState extends State<CartWidget> {
                                                                                   children: [
                                                                                     Flexible(
                                                                                       child: Container(
+                                                                                        width: 80.0,
                                                                                         height: 30.0,
                                                                                         constraints: BoxConstraints(
                                                                                           maxWidth: 150.0,
@@ -419,7 +422,7 @@ class _CartWidgetState extends State<CartWidget> {
                                                                                                   if (listItem.quantity == 1) {
                                                                                                     await listItem.restoran!.update(createRestoranRecordData());
                                                                                                     FFAppState().removeFromProductInCart(listItem.product!);
-                                                                                                    setState(() {});
+                                                                                                    safeSetState(() {});
                                                                                                   } else {
                                                                                                     await listItem.reference.update({
                                                                                                       ...createCartItemsRecordData(
@@ -515,24 +518,36 @@ class _CartWidgetState extends State<CartWidget> {
                                                                                       child: Row(
                                                                                         mainAxisSize: MainAxisSize.max,
                                                                                         mainAxisAlignment: MainAxisAlignment.end,
+                                                                                        crossAxisAlignment: CrossAxisAlignment.center,
                                                                                         children: [
-                                                                                          Text(
-                                                                                            'Сумма: ',
-                                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                                  fontFamily: 'Montserrat',
-                                                                                                  letterSpacing: 0.0,
-                                                                                                  fontWeight: FontWeight.w500,
-                                                                                                ),
+                                                                                          Align(
+                                                                                            alignment: AlignmentDirectional(0.0, 1.0),
+                                                                                            child: Text(
+                                                                                              'Сумма: ',
+                                                                                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                                    fontFamily: 'Montserrat',
+                                                                                                    letterSpacing: 0.0,
+                                                                                                    fontWeight: FontWeight.w500,
+                                                                                                  ),
+                                                                                            ),
                                                                                           ),
-                                                                                          Text(
-                                                                                            listItem.totalPrise.toString(),
-                                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                                  fontFamily: 'Montserrat',
-                                                                                                  color: FlutterFlowTheme.of(context).primary,
-                                                                                                  fontSize: 16.0,
-                                                                                                  letterSpacing: 0.0,
-                                                                                                  fontWeight: FontWeight.w600,
-                                                                                                ),
+                                                                                          Align(
+                                                                                            alignment: AlignmentDirectional(0.0, 1.0),
+                                                                                            child: Text(
+                                                                                              formatNumber(
+                                                                                                listItem.totalPrise,
+                                                                                                formatType: FormatType.custom,
+                                                                                                format: '0',
+                                                                                                locale: '',
+                                                                                              ),
+                                                                                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                                    fontFamily: 'Montserrat',
+                                                                                                    color: FlutterFlowTheme.of(context).primary,
+                                                                                                    fontSize: 16.0,
+                                                                                                    letterSpacing: 0.0,
+                                                                                                    fontWeight: FontWeight.w600,
+                                                                                                  ),
+                                                                                            ),
                                                                                           ),
                                                                                           Text(
                                                                                             '₽',
@@ -610,11 +625,11 @@ class _CartWidgetState extends State<CartWidget> {
                                                                                         if (!snapshot.hasData) {
                                                                                           return Center(
                                                                                             child: SizedBox(
-                                                                                              width: 50.0,
-                                                                                              height: 50.0,
+                                                                                              width: 60.0,
+                                                                                              height: 60.0,
                                                                                               child: SpinKitPulse(
                                                                                                 color: FlutterFlowTheme.of(context).primary,
-                                                                                                size: 50.0,
+                                                                                                size: 60.0,
                                                                                               ),
                                                                                             ),
                                                                                           );
@@ -623,7 +638,7 @@ class _CartWidgetState extends State<CartWidget> {
                                                                                         final textOptionItemRecord = snapshot.data!;
 
                                                                                         return Text(
-                                                                                          '${textOptionItemRecord.name},',
+                                                                                          '${textOptionItemRecord.name}; ',
                                                                                           style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                 fontFamily: 'Montserrat',
                                                                                                 fontSize: 12.0,
@@ -697,20 +712,30 @@ class _CartWidgetState extends State<CartWidget> {
                                                                         ),
                                                                   ),
                                                                   Text(
-                                                                    ((List<double>
-                                                                            var1) {
-                                                                      return var1.reduce(
-                                                                          (a, b) =>
-                                                                              a +
-                                                                              b);
-                                                                    }(containerCartItemsRecordList
-                                                                            .where((e) =>
-                                                                                e.restoranname ==
-                                                                                listViewMenuRestoranRecord.name)
-                                                                            .toList()
-                                                                            .map((e) => e.totalPrise)
-                                                                            .toList()))
-                                                                        .toString(),
+                                                                    formatNumber(
+                                                                      (List<double>
+                                                                          var1) {
+                                                                        return var1.reduce((a,
+                                                                                b) =>
+                                                                            a +
+                                                                            b);
+                                                                      }(containerCartItemsRecordList
+                                                                          .where((e) =>
+                                                                              e.restoranname ==
+                                                                              listViewMenuRestoranRecord
+                                                                                  .name)
+                                                                          .toList()
+                                                                          .map((e) =>
+                                                                              e.totalPrise)
+                                                                          .toList()),
+                                                                      formatType:
+                                                                          FormatType
+                                                                              .custom,
+                                                                      format:
+                                                                          '0',
+                                                                      locale:
+                                                                          '',
+                                                                    ),
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
                                                                         .bodyMedium
@@ -748,7 +773,7 @@ class _CartWidgetState extends State<CartWidget> {
                                                                     () async {
                                                                   context
                                                                       .pushNamed(
-                                                                    'profileNewOrder',
+                                                                    'newOrder',
                                                                     queryParameters:
                                                                         {
                                                                       'currentCurtItem':
@@ -799,7 +824,7 @@ class _CartWidgetState extends State<CartWidget> {
                                                                       .map((e) =>
                                                                           e.totalPrise)
                                                                       .toList());
-                                                                  setState(
+                                                                  safeSetState(
                                                                       () {});
                                                                 },
                                                                 text:
@@ -955,13 +980,13 @@ class _CartWidgetState extends State<CartWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Для этого действия пожплуйста войдите в свой профиль или зарегистрируйтесь',
+                                'Пожалуйста, войдите в свой аккаунт или зарегистрируйтесь.',
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Montserrat',
-                                      fontSize: 28.0,
+                                      fontSize: 24.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -977,6 +1002,7 @@ class _CartWidgetState extends State<CartWidget> {
                                       child: FFButtonWidget(
                                         onPressed: () async {
                                           Navigator.pop(context);
+                                          context.safePop();
                                         },
                                         text: 'Закрыть',
                                         options: FFButtonOptions(
@@ -1017,7 +1043,7 @@ class _CartWidgetState extends State<CartWidget> {
                                     Expanded(
                                       child: FFButtonWidget(
                                         onPressed: () async {
-                                          context.pushNamed('Auth_login');
+                                          context.pushNamed('login');
                                         },
                                         text: 'Войти',
                                         options: FFButtonOptions(

@@ -126,6 +126,32 @@ class MenuRecord extends FirestoreRecord {
   int get popular => _popular ?? 0;
   bool hasPopular() => _popular != null;
 
+  // "rating" field.
+  double? _rating;
+  double get rating => _rating ?? 0.0;
+  bool hasRating() => _rating != null;
+
+  // "countRating" field.
+  int? _countRating;
+  int get countRating => _countRating ?? 0;
+  bool hasCountRating() => _countRating != null;
+
+  // "akceptModeratin" field.
+  bool? _akceptModeratin;
+  bool get akceptModeratin => _akceptModeratin ?? false;
+  bool hasAkceptModeratin() => _akceptModeratin != null;
+
+  // "docRefCategoryMenu" field.
+  List<DocumentReference>? _docRefCategoryMenu;
+  List<DocumentReference> get docRefCategoryMenu =>
+      _docRefCategoryMenu ?? const [];
+  bool hasDocRefCategoryMenu() => _docRefCategoryMenu != null;
+
+  // "restoranClose" field.
+  bool? _restoranClose;
+  bool get restoranClose => _restoranClose ?? false;
+  bool hasRestoranClose() => _restoranClose != null;
+
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
@@ -151,6 +177,11 @@ class MenuRecord extends FirestoreRecord {
     _summaRatinTovar = getDataList(snapshotData['summaRatinTovar']);
     _sharp = snapshotData['Sharp'] as bool?;
     _popular = castToType<int>(snapshotData['popular']);
+    _rating = castToType<double>(snapshotData['rating']);
+    _countRating = castToType<int>(snapshotData['countRating']);
+    _akceptModeratin = snapshotData['akceptModeratin'] as bool?;
+    _docRefCategoryMenu = getDataList(snapshotData['docRefCategoryMenu']);
+    _restoranClose = snapshotData['restoranClose'] as bool?;
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -208,6 +239,10 @@ Map<String, dynamic> createMenuRecordData({
   String? restoranName,
   bool? sharp,
   int? popular,
+  double? rating,
+  int? countRating,
+  bool? akceptModeratin,
+  bool? restoranClose,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -227,6 +262,10 @@ Map<String, dynamic> createMenuRecordData({
       'restoranName': restoranName,
       'Sharp': sharp,
       'popular': popular,
+      'rating': rating,
+      'countRating': countRating,
+      'akceptModeratin': akceptModeratin,
+      'restoranClose': restoranClose,
     }.withoutNulls,
   );
 
@@ -260,7 +299,12 @@ class MenuRecordDocumentEquality implements Equality<MenuRecord> {
         listEquality.equals(e1?.reviews, e2?.reviews) &&
         listEquality.equals(e1?.summaRatinTovar, e2?.summaRatinTovar) &&
         e1?.sharp == e2?.sharp &&
-        e1?.popular == e2?.popular;
+        e1?.popular == e2?.popular &&
+        e1?.rating == e2?.rating &&
+        e1?.countRating == e2?.countRating &&
+        e1?.akceptModeratin == e2?.akceptModeratin &&
+        listEquality.equals(e1?.docRefCategoryMenu, e2?.docRefCategoryMenu) &&
+        e1?.restoranClose == e2?.restoranClose;
   }
 
   @override
@@ -286,7 +330,12 @@ class MenuRecordDocumentEquality implements Equality<MenuRecord> {
         e?.reviews,
         e?.summaRatinTovar,
         e?.sharp,
-        e?.popular
+        e?.popular,
+        e?.rating,
+        e?.countRating,
+        e?.akceptModeratin,
+        e?.docRefCategoryMenu,
+        e?.restoranClose
       ]);
 
   @override

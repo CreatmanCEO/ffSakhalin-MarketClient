@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'flutter_flow/request_manager.dart';
 import '/backend/backend.dart';
 import 'backend/api_requests/api_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,6 +70,22 @@ class FFAppState extends ChangeNotifier {
     });
     _safeInit(() {
       _OptionTXT = prefs.getStringList('ff_OptionTXT') ?? _OptionTXT;
+    });
+    _safeInit(() {
+      _UserPhoneNumber =
+          prefs.getString('ff_UserPhoneNumber') ?? _UserPhoneNumber;
+    });
+    _safeInit(() {
+      _CMSCode = prefs.getString('ff_CMSCode') ?? _CMSCode;
+    });
+    _safeInit(() {
+      _UserName = prefs.getString('ff_UserName') ?? _UserName;
+    });
+    _safeInit(() {
+      _UserEmail = prefs.getString('ff_UserEmail') ?? _UserEmail;
+    });
+    _safeInit(() {
+      _testRating = prefs.getDouble('ff_testRating') ?? _testRating;
     });
   }
 
@@ -493,6 +510,103 @@ class FFAppState extends ChangeNotifier {
   set delyverySamovivos(String value) {
     _delyverySamovivos = value;
   }
+
+  String _OrderID = '';
+  String get OrderID => _OrderID;
+  set OrderID(String value) {
+    _OrderID = value;
+  }
+
+  int _rating = 0;
+  int get rating => _rating;
+  set rating(int value) {
+    _rating = value;
+  }
+
+  String _UserPhoneNumber = '';
+  String get UserPhoneNumber => _UserPhoneNumber;
+  set UserPhoneNumber(String value) {
+    _UserPhoneNumber = value;
+    prefs.setString('ff_UserPhoneNumber', value);
+  }
+
+  String _CMSCode = '';
+  String get CMSCode => _CMSCode;
+  set CMSCode(String value) {
+    _CMSCode = value;
+    prefs.setString('ff_CMSCode', value);
+  }
+
+  String _UserName = '';
+  String get UserName => _UserName;
+  set UserName(String value) {
+    _UserName = value;
+    prefs.setString('ff_UserName', value);
+  }
+
+  String _UserEmail = '';
+  String get UserEmail => _UserEmail;
+  set UserEmail(String value) {
+    _UserEmail = value;
+    prefs.setString('ff_UserEmail', value);
+  }
+
+  double _testRating = 0.0;
+  double get testRating => _testRating;
+  set testRating(double value) {
+    _testRating = value;
+    prefs.setDouble('ff_testRating', value);
+  }
+
+  String _userAdres = '';
+  String get userAdres => _userAdres;
+  set userAdres(String value) {
+    _userAdres = value;
+  }
+
+  String _UserAdressStroke = '';
+  String get UserAdressStroke => _UserAdressStroke;
+  set UserAdressStroke(String value) {
+    _UserAdressStroke = value;
+  }
+
+  DocumentReference? _testPositino;
+  DocumentReference? get testPositino => _testPositino;
+  set testPositino(DocumentReference? value) {
+    _testPositino = value;
+  }
+
+  final _caheCategoryManager = StreamRequestManager<List<CartItemsRecord>>();
+  Stream<List<CartItemsRecord>> caheCategory({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Stream<List<CartItemsRecord>> Function() requestFn,
+  }) =>
+      _caheCategoryManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearCaheCategoryCache() => _caheCategoryManager.clear();
+  void clearCaheCategoryCacheKey(String? uniqueKey) =>
+      _caheCategoryManager.clearRequest(uniqueKey);
+
+  final _category8Manager =
+      FutureRequestManager<List<CategoryOfRestaurantCuisineRecord>>();
+  Future<List<CategoryOfRestaurantCuisineRecord>> category8({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Future<List<CategoryOfRestaurantCuisineRecord>> Function()
+        requestFn,
+  }) =>
+      _category8Manager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearCategory8Cache() => _category8Manager.clear();
+  void clearCategory8CacheKey(String? uniqueKey) =>
+      _category8Manager.clearRequest(uniqueKey);
 }
 
 void _safeInit(Function() initializeField) {

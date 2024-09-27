@@ -66,6 +66,41 @@ class UserRecord extends FirestoreRecord {
   List<DocumentReference> get favoritTovar => _favoritTovar ?? const [];
   bool hasFavoritTovar() => _favoritTovar != null;
 
+  // "smsCode" field.
+  int? _smsCode;
+  int get smsCode => _smsCode ?? 0;
+  bool hasSmsCode() => _smsCode != null;
+
+  // "codeTrue" field.
+  bool? _codeTrue;
+  bool get codeTrue => _codeTrue ?? false;
+  bool hasCodeTrue() => _codeTrue != null;
+
+  // "authCode" field.
+  String? _authCode;
+  String get authCode => _authCode ?? '';
+  bool hasAuthCode() => _authCode != null;
+
+  // "isLoggedIn" field.
+  bool? _isLoggedIn;
+  bool get isLoggedIn => _isLoggedIn ?? false;
+  bool hasIsLoggedIn() => _isLoggedIn != null;
+
+  // "EmailReal" field.
+  String? _emailReal;
+  String get emailReal => _emailReal ?? '';
+  bool hasEmailReal() => _emailReal != null;
+
+  // "Adres" field.
+  String? _adres;
+  String get adres => _adres ?? '';
+  bool hasAdres() => _adres != null;
+
+  // "AdresStroke" field.
+  String? _adresStroke;
+  String get adresStroke => _adresStroke ?? '';
+  bool hasAdresStroke() => _adresStroke != null;
+
   void _initializeFields() {
     _email = snapshotData['email'] as String?;
     _displayName = snapshotData['display_name'] as String?;
@@ -77,6 +112,13 @@ class UserRecord extends FirestoreRecord {
     _youRest = snapshotData['YouRest'] as DocumentReference?;
     _favorit = getDataList(snapshotData['Favorit']);
     _favoritTovar = getDataList(snapshotData['FavoritTovar']);
+    _smsCode = castToType<int>(snapshotData['smsCode']);
+    _codeTrue = snapshotData['codeTrue'] as bool?;
+    _authCode = snapshotData['authCode'] as String?;
+    _isLoggedIn = snapshotData['isLoggedIn'] as bool?;
+    _emailReal = snapshotData['EmailReal'] as String?;
+    _adres = snapshotData['Adres'] as String?;
+    _adresStroke = snapshotData['AdresStroke'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -120,6 +162,13 @@ Map<String, dynamic> createUserRecordData({
   DateTime? createdTime,
   String? phoneNumber,
   DocumentReference? youRest,
+  int? smsCode,
+  bool? codeTrue,
+  String? authCode,
+  bool? isLoggedIn,
+  String? emailReal,
+  String? adres,
+  String? adresStroke,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -130,6 +179,13 @@ Map<String, dynamic> createUserRecordData({
       'created_time': createdTime,
       'phone_number': phoneNumber,
       'YouRest': youRest,
+      'smsCode': smsCode,
+      'codeTrue': codeTrue,
+      'authCode': authCode,
+      'isLoggedIn': isLoggedIn,
+      'EmailReal': emailReal,
+      'Adres': adres,
+      'AdresStroke': adresStroke,
     }.withoutNulls,
   );
 
@@ -151,7 +207,14 @@ class UserRecordDocumentEquality implements Equality<UserRecord> {
         listEquality.equals(e1?.productinCart, e2?.productinCart) &&
         e1?.youRest == e2?.youRest &&
         listEquality.equals(e1?.favorit, e2?.favorit) &&
-        listEquality.equals(e1?.favoritTovar, e2?.favoritTovar);
+        listEquality.equals(e1?.favoritTovar, e2?.favoritTovar) &&
+        e1?.smsCode == e2?.smsCode &&
+        e1?.codeTrue == e2?.codeTrue &&
+        e1?.authCode == e2?.authCode &&
+        e1?.isLoggedIn == e2?.isLoggedIn &&
+        e1?.emailReal == e2?.emailReal &&
+        e1?.adres == e2?.adres &&
+        e1?.adresStroke == e2?.adresStroke;
   }
 
   @override
@@ -165,7 +228,14 @@ class UserRecordDocumentEquality implements Equality<UserRecord> {
         e?.productinCart,
         e?.youRest,
         e?.favorit,
-        e?.favoritTovar
+        e?.favoritTovar,
+        e?.smsCode,
+        e?.codeTrue,
+        e?.authCode,
+        e?.isLoggedIn,
+        e?.emailReal,
+        e?.adres,
+        e?.adresStroke
       ]);
 
   @override

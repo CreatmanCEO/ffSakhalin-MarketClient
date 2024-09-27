@@ -16,6 +16,7 @@ import '../main.dart';
 
 import 'lat_lng.dart';
 
+export 'keep_alive_wrapper.dart';
 export 'lat_lng.dart';
 export 'place.dart';
 export 'uploaded_file.dart';
@@ -29,16 +30,23 @@ export 'package:cloud_firestore/cloud_firestore.dart'
     show DocumentReference, FirebaseFirestore;
 export 'package:page_transition/page_transition.dart';
 export 'custom_icons.dart' show FFIcons;
+export 'internationalization.dart' show FFLocalizations;
 export 'nav/nav.dart';
 
 T valueOrDefault<T>(T? value, T defaultValue) =>
     (value is String && value.isEmpty) || value == null ? defaultValue : value;
+
+void _setTimeagoLocales() {
+  timeago.setLocaleMessages('ru', timeago.RuMessages());
+  timeago.setLocaleMessages('ru_short', timeago.RuShortMessages());
+}
 
 String dateTimeFormat(String format, DateTime? dateTime, {String? locale}) {
   if (dateTime == null) {
     return '';
   }
   if (format == 'relative') {
+    _setTimeagoLocales();
     return timeago.format(dateTime, locale: locale, allowFromNow: true);
   }
   return DateFormat(format, locale).format(dateTime);
@@ -95,10 +103,18 @@ String formatNumber(
           formattedValue = NumberFormat.decimalPattern().format(value);
           break;
         case DecimalType.periodDecimal:
-          formattedValue = NumberFormat.decimalPattern('en_US').format(value);
+          if (currency != null) {
+            formattedValue = NumberFormat('#,##0.00', 'en_US').format(value);
+          } else {
+            formattedValue = NumberFormat.decimalPattern('en_US').format(value);
+          }
           break;
         case DecimalType.commaDecimal:
-          formattedValue = NumberFormat.decimalPattern('es_PA').format(value);
+          if (currency != null) {
+            formattedValue = NumberFormat('#,##0.00', 'es_PA').format(value);
+          } else {
+            formattedValue = NumberFormat.decimalPattern('es_PA').format(value);
+          }
           break;
       }
       break;
@@ -245,8 +261,15 @@ extension FFTextEditingControllerExt on TextEditingController? {
 }
 
 extension IterableExt<T> on Iterable<T> {
-  List<T> sortedList<S extends Comparable>([S Function(T)? keyOf]) => toList()
-    ..sort(keyOf == null ? null : ((a, b) => keyOf(a).compareTo(keyOf(b))));
+  List<T> sortedList<S extends Comparable>(
+      {S Function(T)? keyOf, bool desc = false}) {
+    final sortedAscending = toList()
+      ..sort(keyOf == null ? null : ((a, b) => keyOf(a).compareTo(keyOf(b))));
+    if (desc) {
+      return sortedAscending.reversed.toList();
+    }
+    return sortedAscending;
+  }
 
   List<S> mapIndexed<S>(S Function(int, T) func) => toList()
       .asMap()
@@ -258,6 +281,9 @@ extension IterableExt<T> on Iterable<T> {
 extension StringDocRef on String {
   DocumentReference get ref => FirebaseFirestore.instance.doc(this);
 }
+
+void setAppLanguage(BuildContext context, String language) =>
+    MyApp.of(context).setLocale(language);
 
 void setDarkModeSetting(BuildContext context, ThemeMode themeMode) =>
     MyApp.of(context).setThemeMode(themeMode);

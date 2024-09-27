@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.mycompany.sakhmarket</string>
+	<string>com.mycompany.sakhmarketKlient</string>
 	<key>PROJECT_ID</key>
 	<string>marketsakh-ad3a8</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:722615212666:ios:c03be768bbf2c226c6b9c3</string>
+	<string>1:722615212666:ios:df4ec92d657c8754c6b9c3</string>
 </dict>
 </plist>

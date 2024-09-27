@@ -1,18 +1,20 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/header_widget.dart';
-import '/components/popup_curent_tovar_widget.dart';
-import '/components/stop_go_login_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/main/carousel_component/carousel_component_widget.dart';
+import '/main/place_component/place_component_widget.dart';
+import '/main/stop_login/stop_login_widget.dart';
+import 'dart:math';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,17 +29,35 @@ class FavourWidget extends StatefulWidget {
   State<FavourWidget> createState() => _FavourWidgetState();
 }
 
-class _FavourWidgetState extends State<FavourWidget> {
+class _FavourWidgetState extends State<FavourWidget>
+    with TickerProviderStateMixin {
   late FavourModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => FavourModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    animationsMap.addAll({
+      'iconButtonOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+        ],
+      ),
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -50,9 +70,7 @@ class _FavourWidgetState extends State<FavourWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
@@ -67,7 +85,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                     alignment: AlignmentDirectional(0.0, 0.0),
                     child: Container(
                       constraints: BoxConstraints(
-                        maxWidth: 1305.0,
+                        maxWidth: 1265.0,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -75,26 +93,6 @@ class _FavourWidgetState extends State<FavourWidget> {
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          if (responsiveVisibility(
-                            context: context,
-                            phone: false,
-                            tablet: false,
-                          ))
-                            Container(
-                              width: double.infinity,
-                              height: 80.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: wrapWithModel(
-                                model: _model.headerModel,
-                                updateCallback: () => setState(() {}),
-                                child: HeaderWidget(
-                                  position: 'favorit',
-                                ),
-                              ),
-                            ),
                           Flexible(
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
@@ -226,7 +224,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                             true;
                                                                         _model.item =
                                                                             false;
-                                                                        setState(
+                                                                        safeSetState(
                                                                             () {});
                                                                       },
                                                                       child:
@@ -292,7 +290,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                             false;
                                                                         _model.item =
                                                                             true;
-                                                                        setState(
+                                                                        safeSetState(
                                                                             () {});
                                                                       },
                                                                       child:
@@ -381,7 +379,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                               true;
                                                                           _model.item =
                                                                               false;
-                                                                          setState(
+                                                                          safeSetState(
                                                                               () {});
                                                                         },
                                                                         child:
@@ -444,7 +442,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                               false;
                                                                           _model.item =
                                                                               true;
-                                                                          setState(
+                                                                          safeSetState(
                                                                               () {});
                                                                         },
                                                                         child:
@@ -563,11 +561,11 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                               .hasData) {
                                                                             return Center(
                                                                               child: SizedBox(
-                                                                                width: 50.0,
-                                                                                height: 50.0,
+                                                                                width: 60.0,
+                                                                                height: 60.0,
                                                                                 child: SpinKitPulse(
                                                                                   color: FlutterFlowTheme.of(context).primary,
-                                                                                  size: 50.0,
+                                                                                  size: 60.0,
                                                                                 ),
                                                                               ),
                                                                             );
@@ -604,7 +602,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                 highlightColor: Colors.transparent,
                                                                                 onTap: () async {
                                                                                   context.pushNamed(
-                                                                                    'Place',
+                                                                                    'place',
                                                                                     queryParameters: {
                                                                                       'restoran': serializeParam(
                                                                                         houseCardRestoranRecord,
@@ -626,7 +624,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                           child: Stack(
                                                                                             alignment: AlignmentDirectional(-1.0, 1.0),
                                                                                             children: [
-                                                                                              CarouselComponentWidget(
+                                                                                              PlaceComponentWidget(
                                                                                                 key: Key('Key5as_${listFavoritIndex}_of_${listFavorit.length}'),
                                                                                                 restoran: houseCardRestoranRecord,
                                                                                               ),
@@ -651,7 +649,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                         Align(
                                                                                           alignment: AlignmentDirectional(0.0, -1.0),
                                                                                           child: Padding(
-                                                                                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 25.0, 16.0, 0.0),
+                                                                                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 15.0, 10.0, 0.0),
                                                                                             child: Row(
                                                                                               mainAxisSize: MainAxisSize.max,
                                                                                               mainAxisAlignment: MainAxisAlignment.end,
@@ -663,13 +661,14 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                     Container(
                                                                                                       decoration: BoxDecoration(),
                                                                                                       child: FlutterFlowIconButton(
-                                                                                                        borderColor: (currentUserDocument?.favorit?.toList() ?? []).contains(houseCardRestoranRecord.reference) ? FlutterFlowTheme.of(context).error : Color(0xFF8A8A8A),
+                                                                                                        borderColor: (currentUserDocument?.favorit?.toList() ?? []).contains(houseCardRestoranRecord.reference) ? Color(0xFFFD2A4F) : Color(0xFFE1A3A3),
                                                                                                         borderRadius: 15.0,
                                                                                                         borderWidth: 2.0,
                                                                                                         buttonSize: 40.0,
+                                                                                                        hoverIconColor: (currentUserDocument?.favorit?.toList() ?? []).contains(houseCardRestoranRecord.reference) ? Color(0xFFFD2A4F) : Color(0xFFFF4E4E),
                                                                                                         icon: Icon(
                                                                                                           Icons.favorite_rounded,
-                                                                                                          color: (currentUserDocument?.favorit?.toList() ?? []).contains(houseCardRestoranRecord.reference) ? FlutterFlowTheme.of(context).error : Color(0xFF8A8A8A),
+                                                                                                          color: (currentUserDocument?.favorit?.toList() ?? []).contains(houseCardRestoranRecord.reference) ? Color(0xFFFD2A4F) : Color(0xFFE1A3A3),
                                                                                                           size: 25.0,
                                                                                                         ),
                                                                                                         onPressed: () async {
@@ -699,17 +698,17 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                               context: context,
                                                                                                               builder: (context) {
                                                                                                                 return GestureDetector(
-                                                                                                                  onTap: () => _model.unfocusNode.canRequestFocus ? FocusScope.of(context).requestFocus(_model.unfocusNode) : FocusScope.of(context).unfocus(),
+                                                                                                                  onTap: () => FocusScope.of(context).unfocus(),
                                                                                                                   child: Padding(
                                                                                                                     padding: MediaQuery.viewInsetsOf(context),
-                                                                                                                    child: StopGoLoginWidget(),
+                                                                                                                    child: StopLoginWidget(),
                                                                                                                   ),
                                                                                                                 );
                                                                                                               },
                                                                                                             ).then((value) => safeSetState(() {}));
                                                                                                           }
                                                                                                         },
-                                                                                                      ),
+                                                                                                      ).animateOnPageLoad(animationsMap['iconButtonOnPageLoadAnimation']!),
                                                                                                     ),
                                                                                                   ].divide(SizedBox(width: 10.0)),
                                                                                                 ),
@@ -724,7 +723,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                       child: Column(
                                                                                         mainAxisSize: MainAxisSize.max,
                                                                                         children: [
-                                                                                          if (functions.isRestaurantOutsideWorkingHours(houseCardRestoranRecord) ?? true)
+                                                                                          if (functions.isRestaurantOutsideWorkingHours(houseCardRestoranRecord)! || (houseCardRestoranRecord.isClosedUntilTomorrow == true))
                                                                                             Align(
                                                                                               alignment: AlignmentDirectional(-1.0, 0.0),
                                                                                               child: Container(
@@ -741,7 +740,11 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                 ),
                                                                                                 alignment: AlignmentDirectional(0.0, 0.0),
                                                                                                 child: Text(
-                                                                                                  'Закрыт до: ${dateTimeFormat('HH:mm', houseCardRestoranRecord.timeStart)}',
+                                                                                                  'Закрыт до: ${dateTimeFormat(
+                                                                                                    "HH:mm",
+                                                                                                    houseCardRestoranRecord.timeStart,
+                                                                                                    locale: FFLocalizations.of(context).languageCode,
+                                                                                                  )}',
                                                                                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                         fontFamily: 'Montserrat',
                                                                                                         color: FlutterFlowTheme.of(context).error,
@@ -785,51 +788,53 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                   ].divide(SizedBox(height: 5.0)),
                                                                                                 ),
                                                                                               ),
-                                                                                              Column(
-                                                                                                mainAxisSize: MainAxisSize.max,
-                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                children: [
-                                                                                                  Row(
-                                                                                                    mainAxisSize: MainAxisSize.max,
-                                                                                                    children: [
-                                                                                                      Icon(
-                                                                                                        Icons.star_border,
-                                                                                                        color: Color(0xFFFFBE00),
-                                                                                                        size: 22.0,
-                                                                                                      ),
-                                                                                                      Text(
-                                                                                                        valueOrDefault<String>(
-                                                                                                          ((List<int> var1) {
-                                                                                                            return var1.isEmpty ? 0 : var1.reduce((a, b) => a + b) / var1.length;
-                                                                                                          }(houseCardRestoranRecord.summaRating.toList()))
-                                                                                                              .toString(),
-                                                                                                          '0',
+                                                                                              Container(
+                                                                                                decoration: BoxDecoration(),
+                                                                                                child: Column(
+                                                                                                  mainAxisSize: MainAxisSize.max,
+                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                  children: [
+                                                                                                    Row(
+                                                                                                      mainAxisSize: MainAxisSize.max,
+                                                                                                      children: [
+                                                                                                        Icon(
+                                                                                                          Icons.star_border,
+                                                                                                          color: Color(0xFFFFBE00),
+                                                                                                          size: 22.0,
                                                                                                         ),
-                                                                                                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                                              fontFamily: 'Montserrat',
-                                                                                                              letterSpacing: 0.0,
-                                                                                                            ),
-                                                                                                      ),
-                                                                                                    ].divide(SizedBox(width: 5.0)),
-                                                                                                  ),
-                                                                                                  Row(
-                                                                                                    mainAxisSize: MainAxisSize.max,
-                                                                                                    children: [
-                                                                                                      Icon(
-                                                                                                        Icons.chat,
-                                                                                                        color: FlutterFlowTheme.of(context).secondaryText,
-                                                                                                        size: 22.0,
-                                                                                                      ),
-                                                                                                      Text(
-                                                                                                        houseCardRestoranRecord.reviews.length.toString(),
-                                                                                                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                                              fontFamily: 'Montserrat',
-                                                                                                              letterSpacing: 0.0,
-                                                                                                            ),
-                                                                                                      ),
-                                                                                                    ].divide(SizedBox(width: 5.0)),
-                                                                                                  ),
-                                                                                                ].divide(SizedBox(height: 5.0)),
+                                                                                                        Text(
+                                                                                                          formatNumber(
+                                                                                                            houseCardRestoranRecord.rating,
+                                                                                                            formatType: FormatType.custom,
+                                                                                                            format: '0.0',
+                                                                                                            locale: '',
+                                                                                                          ),
+                                                                                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                                                fontFamily: 'Montserrat',
+                                                                                                                letterSpacing: 0.0,
+                                                                                                              ),
+                                                                                                        ),
+                                                                                                      ].divide(SizedBox(width: 5.0)),
+                                                                                                    ),
+                                                                                                    Row(
+                                                                                                      mainAxisSize: MainAxisSize.max,
+                                                                                                      children: [
+                                                                                                        Icon(
+                                                                                                          Icons.chat,
+                                                                                                          color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                                          size: 22.0,
+                                                                                                        ),
+                                                                                                        Text(
+                                                                                                          houseCardRestoranRecord.countRating.toString(),
+                                                                                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                                                fontFamily: 'Montserrat',
+                                                                                                                letterSpacing: 0.0,
+                                                                                                              ),
+                                                                                                        ),
+                                                                                                      ].divide(SizedBox(width: 5.0)),
+                                                                                                    ),
+                                                                                                  ].divide(SizedBox(height: 5.0)),
+                                                                                                ),
                                                                                               ),
                                                                                             ],
                                                                                           ),
@@ -847,7 +852,12 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                     size: 20.0,
                                                                                                   ),
                                                                                                   Text(
-                                                                                                    'от ${houseCardRestoranRecord.minSumDelivery.toString()} руб.',
+                                                                                                    'от ${formatNumber(
+                                                                                                      houseCardRestoranRecord.minSumDelivery,
+                                                                                                      formatType: FormatType.custom,
+                                                                                                      format: '0',
+                                                                                                      locale: '',
+                                                                                                    )} руб.',
                                                                                                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                           fontFamily: 'Montserrat',
                                                                                                           letterSpacing: 0.0,
@@ -963,11 +973,11 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                           return Center(
                                                                             child:
                                                                                 SizedBox(
-                                                                              width: 50.0,
-                                                                              height: 50.0,
+                                                                              width: 60.0,
+                                                                              height: 60.0,
                                                                               child: SpinKitPulse(
                                                                                 color: FlutterFlowTheme.of(context).primary,
-                                                                                size: 50.0,
+                                                                                size: 60.0,
                                                                               ),
                                                                             ),
                                                                           );
@@ -1007,23 +1017,18 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                   hoverColor: Colors.transparent,
                                                                                   highlightColor: Colors.transparent,
                                                                                   onTap: () async {
-                                                                                    await showModalBottomSheet(
-                                                                                      isScrollControlled: true,
-                                                                                      backgroundColor: Colors.transparent,
-                                                                                      enableDrag: false,
-                                                                                      context: context,
-                                                                                      builder: (context) {
-                                                                                        return GestureDetector(
-                                                                                          onTap: () => _model.unfocusNode.canRequestFocus ? FocusScope.of(context).requestFocus(_model.unfocusNode) : FocusScope.of(context).unfocus(),
-                                                                                          child: Padding(
-                                                                                            padding: MediaQuery.viewInsetsOf(context),
-                                                                                            child: PopupCurentTovarWidget(
-                                                                                              currentTovar: containerMenuRecord,
-                                                                                            ),
-                                                                                          ),
-                                                                                        );
+                                                                                    context.pushNamed(
+                                                                                      'currentItem',
+                                                                                      queryParameters: {
+                                                                                        'currentTovar': serializeParam(
+                                                                                          containerMenuRecord,
+                                                                                          ParamType.Document,
+                                                                                        ),
+                                                                                      }.withoutNulls,
+                                                                                      extra: <String, dynamic>{
+                                                                                        'currentTovar': containerMenuRecord,
                                                                                       },
-                                                                                    ).then((value) => safeSetState(() {}));
+                                                                                    );
                                                                                   },
                                                                                   child: Container(
                                                                                     width: double.infinity,
@@ -1044,55 +1049,30 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                         Stack(
                                                                                           alignment: AlignmentDirectional(1.0, -1.0),
                                                                                           children: [
-                                                                                            InkWell(
-                                                                                              splashColor: Colors.transparent,
-                                                                                              focusColor: Colors.transparent,
-                                                                                              hoverColor: Colors.transparent,
-                                                                                              highlightColor: Colors.transparent,
-                                                                                              onTap: () async {
-                                                                                                await showModalBottomSheet(
-                                                                                                  isScrollControlled: true,
-                                                                                                  backgroundColor: Colors.transparent,
-                                                                                                  enableDrag: false,
-                                                                                                  context: context,
-                                                                                                  builder: (context) {
-                                                                                                    return GestureDetector(
-                                                                                                      onTap: () => _model.unfocusNode.canRequestFocus ? FocusScope.of(context).requestFocus(_model.unfocusNode) : FocusScope.of(context).unfocus(),
-                                                                                                      child: Padding(
-                                                                                                        padding: MediaQuery.viewInsetsOf(context),
-                                                                                                        child: PopupCurentTovarWidget(
-                                                                                                          currentTovar: containerMenuRecord,
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    );
-                                                                                                  },
-                                                                                                ).then((value) => safeSetState(() {}));
-                                                                                              },
-                                                                                              child: Container(
-                                                                                                decoration: BoxDecoration(
-                                                                                                  color: FlutterFlowTheme.of(context).secondaryBackground,
-                                                                                                  borderRadius: BorderRadius.only(
-                                                                                                    bottomLeft: Radius.circular(10.0),
-                                                                                                    bottomRight: Radius.circular(0.0),
-                                                                                                    topLeft: Radius.circular(10.0),
-                                                                                                    topRight: Radius.circular(0.0),
-                                                                                                  ),
+                                                                                            Container(
+                                                                                              decoration: BoxDecoration(
+                                                                                                color: FlutterFlowTheme.of(context).secondaryBackground,
+                                                                                                borderRadius: BorderRadius.only(
+                                                                                                  bottomLeft: Radius.circular(10.0),
+                                                                                                  bottomRight: Radius.circular(0.0),
+                                                                                                  topLeft: Radius.circular(10.0),
+                                                                                                  topRight: Radius.circular(0.0),
                                                                                                 ),
-                                                                                                child: ClipRRect(
-                                                                                                  borderRadius: BorderRadius.only(
-                                                                                                    bottomLeft: Radius.circular(10.0),
-                                                                                                    bottomRight: Radius.circular(0.0),
-                                                                                                    topLeft: Radius.circular(10.0),
-                                                                                                    topRight: Radius.circular(0.0),
-                                                                                                  ),
-                                                                                                  child: CachedNetworkImage(
-                                                                                                    fadeInDuration: Duration(milliseconds: 500),
-                                                                                                    fadeOutDuration: Duration(milliseconds: 500),
-                                                                                                    imageUrl: containerMenuRecord.image.first,
-                                                                                                    width: 140.0,
-                                                                                                    height: 140.0,
-                                                                                                    fit: BoxFit.cover,
-                                                                                                  ),
+                                                                                              ),
+                                                                                              child: ClipRRect(
+                                                                                                borderRadius: BorderRadius.only(
+                                                                                                  bottomLeft: Radius.circular(10.0),
+                                                                                                  bottomRight: Radius.circular(0.0),
+                                                                                                  topLeft: Radius.circular(10.0),
+                                                                                                  topRight: Radius.circular(0.0),
+                                                                                                ),
+                                                                                                child: CachedNetworkImage(
+                                                                                                  fadeInDuration: Duration(milliseconds: 500),
+                                                                                                  fadeOutDuration: Duration(milliseconds: 500),
+                                                                                                  imageUrl: containerMenuRecord.image.first,
+                                                                                                  width: 140.0,
+                                                                                                  height: 140.0,
+                                                                                                  fit: BoxFit.cover,
                                                                                                 ),
                                                                                               ),
                                                                                             ),
@@ -1135,10 +1115,10 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                       context: context,
                                                                                                       builder: (context) {
                                                                                                         return GestureDetector(
-                                                                                                          onTap: () => _model.unfocusNode.canRequestFocus ? FocusScope.of(context).requestFocus(_model.unfocusNode) : FocusScope.of(context).unfocus(),
+                                                                                                          onTap: () => FocusScope.of(context).unfocus(),
                                                                                                           child: Padding(
                                                                                                             padding: MediaQuery.viewInsetsOf(context),
-                                                                                                            child: StopGoLoginWidget(),
+                                                                                                            child: StopLoginWidget(),
                                                                                                           ),
                                                                                                         );
                                                                                                       },
@@ -1190,13 +1170,18 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                     Column(
                                                                                                       mainAxisSize: MainAxisSize.max,
                                                                                                       children: [
-                                                                                                        if (containerMenuRecord.oldPrice != 0.0)
+                                                                                                        if (containerMenuRecord.oldPrice > 1.0)
                                                                                                           Row(
                                                                                                             mainAxisSize: MainAxisSize.max,
                                                                                                             mainAxisAlignment: MainAxisAlignment.start,
                                                                                                             children: [
                                                                                                               Text(
-                                                                                                                containerMenuRecord.oldPrice.toString(),
+                                                                                                                formatNumber(
+                                                                                                                  containerMenuRecord.oldPrice,
+                                                                                                                  formatType: FormatType.custom,
+                                                                                                                  format: '0',
+                                                                                                                  locale: '',
+                                                                                                                ),
                                                                                                                 style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                                       fontFamily: 'Montserrat',
                                                                                                                       color: FlutterFlowTheme.of(context).accent2,
@@ -1208,7 +1193,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                               Icon(
                                                                                                                 Icons.currency_ruble,
                                                                                                                 color: FlutterFlowTheme.of(context).accent2,
-                                                                                                                size: 20.0,
+                                                                                                                size: 16.0,
                                                                                                               ),
                                                                                                             ].divide(SizedBox(width: 3.0)),
                                                                                                           ),
@@ -1217,11 +1202,16 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                           mainAxisAlignment: MainAxisAlignment.start,
                                                                                                           children: [
                                                                                                             Text(
-                                                                                                              containerMenuRecord.price.toString(),
+                                                                                                              formatNumber(
+                                                                                                                containerMenuRecord.price,
+                                                                                                                formatType: FormatType.custom,
+                                                                                                                format: '0',
+                                                                                                                locale: '',
+                                                                                                              ),
                                                                                                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                                     fontFamily: 'Montserrat',
                                                                                                                     color: FlutterFlowTheme.of(context).primary,
-                                                                                                                    fontSize: 20.0,
+                                                                                                                    fontSize: 19.0,
                                                                                                                     letterSpacing: 0.0,
                                                                                                                     fontWeight: FontWeight.w500,
                                                                                                                   ),
@@ -1229,7 +1219,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                             Icon(
                                                                                                               Icons.currency_ruble,
                                                                                                               color: FlutterFlowTheme.of(context).primary,
-                                                                                                              size: 20.0,
+                                                                                                              size: 19.0,
                                                                                                             ),
                                                                                                           ].divide(SizedBox(width: 3.0)),
                                                                                                         ),
@@ -1256,18 +1246,18 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                             if (!snapshot.hasData) {
                                                                                                               return Center(
                                                                                                                 child: SizedBox(
-                                                                                                                  width: 50.0,
-                                                                                                                  height: 50.0,
+                                                                                                                  width: 60.0,
+                                                                                                                  height: 60.0,
                                                                                                                   child: SpinKitPulse(
                                                                                                                     color: FlutterFlowTheme.of(context).primary,
-                                                                                                                    size: 50.0,
+                                                                                                                    size: 60.0,
                                                                                                                   ),
                                                                                                                 ),
                                                                                                               );
                                                                                                             }
                                                                                                             List<CartItemsRecord> containerCartItemsRecordList = snapshot.data!;
-
                                                                                                             final containerCartItemsRecord = containerCartItemsRecordList.isNotEmpty ? containerCartItemsRecordList.first : null;
+
                                                                                                             return Container(
                                                                                                               constraints: BoxConstraints(
                                                                                                                 maxWidth: 200.0,
@@ -1333,13 +1323,13 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                                             ),
                                                                                                                           }, cartItemsRecordReference);
 
-                                                                                                                          setState(() {});
+                                                                                                                          safeSetState(() {});
                                                                                                                         },
                                                                                                                         text: 'К заказу',
                                                                                                                         options: FFButtonOptions(
                                                                                                                           width: 80.0,
                                                                                                                           height: 30.0,
-                                                                                                                          padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                                                                                                                          padding: EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 10.0, 0.0),
                                                                                                                           iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                                                                                                                           color: FlutterFlowTheme.of(context).primary,
                                                                                                                           textStyle: FlutterFlowTheme.of(context).titleSmall.override(
@@ -1352,7 +1342,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                                             color: Colors.transparent,
                                                                                                                             width: 1.0,
                                                                                                                           ),
-                                                                                                                          borderRadius: BorderRadius.circular(8.0),
+                                                                                                                          borderRadius: BorderRadius.circular(10.0),
                                                                                                                         ),
                                                                                                                       ),
                                                                                                                     ),
@@ -1424,14 +1414,23 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                                                                                           ),
                                                                                                                           Padding(
                                                                                                                             padding: EdgeInsetsDirectional.fromSTEB(6.0, 0.0, 6.0, 0.0),
-                                                                                                                            child: Text(
-                                                                                                                              containerCartItemsRecord!.quantity.toString(),
+                                                                                                                            child: AnimatedDefaultTextStyle(
                                                                                                                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                                                                                                     fontFamily: 'Montserrat',
                                                                                                                                     fontSize: 20.0,
                                                                                                                                     letterSpacing: 0.0,
                                                                                                                                     fontWeight: FontWeight.w600,
                                                                                                                                   ),
+                                                                                                                              duration: Duration(milliseconds: 735),
+                                                                                                                              curve: Curves.easeInOut,
+                                                                                                                              child: Text(
+                                                                                                                                formatNumber(
+                                                                                                                                  containerCartItemsRecord!.quantity,
+                                                                                                                                  formatType: FormatType.custom,
+                                                                                                                                  format: '0',
+                                                                                                                                  locale: '',
+                                                                                                                                ).maybeHandleOverflow(maxChars: 1),
+                                                                                                                              ),
                                                                                                                             ),
                                                                                                                           ),
                                                                                                                           Align(
@@ -1511,420 +1510,6 @@ class _FavourWidgetState extends State<FavourWidget> {
                                                         ),
                                                       ),
                                                     ),
-                                                  if ((_model.shop ?? true) &&
-                                                      responsiveVisibility(
-                                                        context: context,
-                                                        phone: false,
-                                                        tablet: false,
-                                                      ))
-                                                    Expanded(
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          10.0,
-                                                                          0.0,
-                                                                          10.0,
-                                                                          0.0),
-                                                              child:
-                                                                  AuthUserStreamWidget(
-                                                                builder:
-                                                                    (context) =>
-                                                                        Builder(
-                                                                  builder:
-                                                                      (context) {
-                                                                    final favoritRest =
-                                                                        (currentUserDocument?.favorit?.toList() ??
-                                                                                [])
-                                                                            .toList();
-
-                                                                    return Wrap(
-                                                                      spacing:
-                                                                          15.0,
-                                                                      runSpacing:
-                                                                          15.0,
-                                                                      alignment:
-                                                                          WrapAlignment
-                                                                              .start,
-                                                                      crossAxisAlignment:
-                                                                          WrapCrossAlignment
-                                                                              .start,
-                                                                      direction:
-                                                                          Axis.horizontal,
-                                                                      runAlignment:
-                                                                          WrapAlignment
-                                                                              .start,
-                                                                      verticalDirection:
-                                                                          VerticalDirection
-                                                                              .down,
-                                                                      clipBehavior:
-                                                                          Clip.none,
-                                                                      children: List.generate(
-                                                                          favoritRest
-                                                                              .length,
-                                                                          (favoritRestIndex) {
-                                                                        final favoritRestItem =
-                                                                            favoritRest[favoritRestIndex];
-                                                                        return Padding(
-                                                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                                                              0.0,
-                                                                              0.0,
-                                                                              0.0,
-                                                                              10.0),
-                                                                          child:
-                                                                              StreamBuilder<RestoranRecord>(
-                                                                            stream:
-                                                                                RestoranRecord.getDocument(favoritRestItem),
-                                                                            builder:
-                                                                                (context, snapshot) {
-                                                                              // Customize what your widget looks like when it's loading.
-                                                                              if (!snapshot.hasData) {
-                                                                                return Center(
-                                                                                  child: SizedBox(
-                                                                                    width: 50.0,
-                                                                                    height: 50.0,
-                                                                                    child: SpinKitPulse(
-                                                                                      color: FlutterFlowTheme.of(context).primary,
-                                                                                      size: 50.0,
-                                                                                    ),
-                                                                                  ),
-                                                                                );
-                                                                              }
-
-                                                                              final houseCardRestoranRecord = snapshot.data!;
-
-                                                                              return Container(
-                                                                                height: 365.0,
-                                                                                constraints: BoxConstraints(
-                                                                                  maxWidth: 300.0,
-                                                                                ),
-                                                                                decoration: BoxDecoration(
-                                                                                  color: Colors.white,
-                                                                                  boxShadow: [
-                                                                                    BoxShadow(
-                                                                                      blurRadius: 4.0,
-                                                                                      color: Color(0x32000000),
-                                                                                      offset: Offset(
-                                                                                        0.0,
-                                                                                        2.0,
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
-                                                                                  borderRadius: BorderRadius.circular(8.0),
-                                                                                ),
-                                                                                child: InkWell(
-                                                                                  splashColor: Colors.transparent,
-                                                                                  focusColor: Colors.transparent,
-                                                                                  hoverColor: Colors.transparent,
-                                                                                  highlightColor: Colors.transparent,
-                                                                                  onTap: () async {
-                                                                                    context.pushNamed(
-                                                                                      'Place',
-                                                                                      queryParameters: {
-                                                                                        'restoran': serializeParam(
-                                                                                          houseCardRestoranRecord,
-                                                                                          ParamType.Document,
-                                                                                        ),
-                                                                                      }.withoutNulls,
-                                                                                      extra: <String, dynamic>{
-                                                                                        'restoran': houseCardRestoranRecord,
-                                                                                      },
-                                                                                    );
-                                                                                  },
-                                                                                  child: Column(
-                                                                                    mainAxisSize: MainAxisSize.max,
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                    children: [
-                                                                                      Column(
-                                                                                        mainAxisSize: MainAxisSize.max,
-                                                                                        children: [
-                                                                                          Stack(
-                                                                                            alignment: AlignmentDirectional(1.0, -1.0),
-                                                                                            children: [
-                                                                                              Stack(
-                                                                                                alignment: AlignmentDirectional(0.0, 1.0),
-                                                                                                children: [
-                                                                                                  Align(
-                                                                                                    alignment: AlignmentDirectional(0.0, 0.0),
-                                                                                                    child: CarouselComponentWidget(
-                                                                                                      key: Key('Keysk7_${favoritRestIndex}_of_${favoritRest.length}'),
-                                                                                                      restoran: houseCardRestoranRecord,
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                  Align(
-                                                                                                    alignment: AlignmentDirectional(-1.0, 1.0),
-                                                                                                    child: Padding(
-                                                                                                      padding: EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 10.0),
-                                                                                                      child: ClipRRect(
-                                                                                                        borderRadius: BorderRadius.circular(8.0),
-                                                                                                        child: Image.network(
-                                                                                                          houseCardRestoranRecord.logo,
-                                                                                                          width: 60.0,
-                                                                                                          height: 60.0,
-                                                                                                          fit: BoxFit.cover,
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ],
-                                                                                              ),
-                                                                                              Padding(
-                                                                                                padding: EdgeInsetsDirectional.fromSTEB(0.0, 25.0, 16.0, 0.0),
-                                                                                                child: Container(
-                                                                                                  decoration: BoxDecoration(),
-                                                                                                  child: FlutterFlowIconButton(
-                                                                                                    borderColor: (currentUserDocument?.favorit?.toList() ?? []).contains(houseCardRestoranRecord.reference) ? FlutterFlowTheme.of(context).error : Color(0xFF8A8A8A),
-                                                                                                    borderRadius: 15.0,
-                                                                                                    borderWidth: 2.0,
-                                                                                                    buttonSize: 40.0,
-                                                                                                    icon: Icon(
-                                                                                                      Icons.favorite_rounded,
-                                                                                                      color: (currentUserDocument?.favorit?.toList() ?? []).contains(houseCardRestoranRecord.reference) ? FlutterFlowTheme.of(context).error : Color(0xFF8A8A8A),
-                                                                                                      size: 25.0,
-                                                                                                    ),
-                                                                                                    onPressed: () async {
-                                                                                                      if (loggedIn) {
-                                                                                                        if ((currentUserDocument?.favorit?.toList() ?? []).contains(favoritRestItem)) {
-                                                                                                          await currentUserReference!.update({
-                                                                                                            ...mapToFirestore(
-                                                                                                              {
-                                                                                                                'Favorit': FieldValue.arrayRemove([favoritRestItem]),
-                                                                                                              },
-                                                                                                            ),
-                                                                                                          });
-                                                                                                        } else {
-                                                                                                          await currentUserReference!.update({
-                                                                                                            ...mapToFirestore(
-                                                                                                              {
-                                                                                                                'Favorit': FieldValue.arrayUnion([favoritRestItem]),
-                                                                                                              },
-                                                                                                            ),
-                                                                                                          });
-                                                                                                        }
-                                                                                                      } else {
-                                                                                                        await showModalBottomSheet(
-                                                                                                          isScrollControlled: true,
-                                                                                                          backgroundColor: Colors.transparent,
-                                                                                                          enableDrag: false,
-                                                                                                          context: context,
-                                                                                                          builder: (context) {
-                                                                                                            return GestureDetector(
-                                                                                                              onTap: () => _model.unfocusNode.canRequestFocus ? FocusScope.of(context).requestFocus(_model.unfocusNode) : FocusScope.of(context).unfocus(),
-                                                                                                              child: Padding(
-                                                                                                                padding: MediaQuery.viewInsetsOf(context),
-                                                                                                                child: StopGoLoginWidget(),
-                                                                                                              ),
-                                                                                                            );
-                                                                                                          },
-                                                                                                        ).then((value) => safeSetState(() {}));
-                                                                                                      }
-                                                                                                    },
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          if (functions.isRestaurantOutsideWorkingHours(houseCardRestoranRecord) ?? true)
-                                                                                            Align(
-                                                                                              alignment: AlignmentDirectional(-1.0, 0.0),
-                                                                                              child: Padding(
-                                                                                                padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 0.0),
-                                                                                                child: Container(
-                                                                                                  width: MediaQuery.sizeOf(context).width * 0.5,
-                                                                                                  height: 35.0,
-                                                                                                  constraints: BoxConstraints(
-                                                                                                    minWidth: 100.0,
-                                                                                                  ),
-                                                                                                  decoration: BoxDecoration(
-                                                                                                    color: FlutterFlowTheme.of(context).secondaryBackground,
-                                                                                                    border: Border.all(
-                                                                                                      color: FlutterFlowTheme.of(context).error,
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                                                                                  child: Text(
-                                                                                                    'Закрыт до: ${dateTimeFormat('HH:mm', houseCardRestoranRecord.timeStart)}',
-                                                                                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                                          fontFamily: 'Montserrat',
-                                                                                                          color: FlutterFlowTheme.of(context).error,
-                                                                                                          letterSpacing: 0.0,
-                                                                                                          fontWeight: FontWeight.w500,
-                                                                                                        ),
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                            ),
-                                                                                          Padding(
-                                                                                            padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 0.0),
-                                                                                            child: Row(
-                                                                                              mainAxisSize: MainAxisSize.max,
-                                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                              children: [
-                                                                                                Expanded(
-                                                                                                  child: Column(
-                                                                                                    mainAxisSize: MainAxisSize.max,
-                                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                    children: [
-                                                                                                      Text(
-                                                                                                        houseCardRestoranRecord.name.maybeHandleOverflow(
-                                                                                                          maxChars: 36,
-                                                                                                          replacement: '…',
-                                                                                                        ),
-                                                                                                        maxLines: 2,
-                                                                                                        style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                                                                                              fontFamily: 'Outfit',
-                                                                                                              color: Color(0xFF101213),
-                                                                                                              fontSize: 20.0,
-                                                                                                              letterSpacing: 0.0,
-                                                                                                              fontWeight: FontWeight.w500,
-                                                                                                            ),
-                                                                                                      ),
-                                                                                                      Text(
-                                                                                                        houseCardRestoranRecord.minDiskription,
-                                                                                                        textAlign: TextAlign.start,
-                                                                                                        maxLines: 2,
-                                                                                                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                                              fontFamily: 'Montserrat',
-                                                                                                              letterSpacing: 0.0,
-                                                                                                            ),
-                                                                                                      ),
-                                                                                                    ].divide(SizedBox(height: 5.0)),
-                                                                                                  ),
-                                                                                                ),
-                                                                                                Column(
-                                                                                                  mainAxisSize: MainAxisSize.max,
-                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                  children: [
-                                                                                                    Row(
-                                                                                                      mainAxisSize: MainAxisSize.max,
-                                                                                                      children: [
-                                                                                                        Icon(
-                                                                                                          Icons.star_border,
-                                                                                                          color: Color(0xFFFFBE00),
-                                                                                                          size: 22.0,
-                                                                                                        ),
-                                                                                                        Text(
-                                                                                                          valueOrDefault<String>(
-                                                                                                            ((List<int> var1) {
-                                                                                                              return var1.isEmpty ? 0 : var1.reduce((a, b) => a + b) / var1.length;
-                                                                                                            }(houseCardRestoranRecord.summaRating.toList()))
-                                                                                                                .toString(),
-                                                                                                            '0',
-                                                                                                          ),
-                                                                                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                                                fontFamily: 'Montserrat',
-                                                                                                                letterSpacing: 0.0,
-                                                                                                                fontWeight: FontWeight.w500,
-                                                                                                              ),
-                                                                                                        ),
-                                                                                                      ].divide(SizedBox(width: 5.0)),
-                                                                                                    ),
-                                                                                                    Row(
-                                                                                                      mainAxisSize: MainAxisSize.max,
-                                                                                                      children: [
-                                                                                                        Icon(
-                                                                                                          Icons.reviews_outlined,
-                                                                                                          color: FlutterFlowTheme.of(context).primary,
-                                                                                                          size: 22.0,
-                                                                                                        ),
-                                                                                                        Text(
-                                                                                                          houseCardRestoranRecord.reviews.length.toString(),
-                                                                                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                                                fontFamily: 'Montserrat',
-                                                                                                                letterSpacing: 0.0,
-                                                                                                                fontWeight: FontWeight.w500,
-                                                                                                              ),
-                                                                                                        ),
-                                                                                                      ].divide(SizedBox(width: 5.0)),
-                                                                                                    ),
-                                                                                                  ].divide(SizedBox(height: 5.0)),
-                                                                                                ),
-                                                                                              ],
-                                                                                            ),
-                                                                                          ),
-                                                                                        ].divide(SizedBox(height: 10.0)),
-                                                                                      ),
-                                                                                      Padding(
-                                                                                        padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 8.0),
-                                                                                        child: Row(
-                                                                                          mainAxisSize: MainAxisSize.max,
-                                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                          children: [
-                                                                                            Row(
-                                                                                              mainAxisSize: MainAxisSize.max,
-                                                                                              children: [
-                                                                                                Icon(
-                                                                                                  Icons.currency_ruble,
-                                                                                                  color: FlutterFlowTheme.of(context).secondaryText,
-                                                                                                  size: 20.0,
-                                                                                                ),
-                                                                                                Text(
-                                                                                                  'от ${houseCardRestoranRecord.minSumDelivery.toString()} руб.',
-                                                                                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                                                        fontFamily: 'Montserrat',
-                                                                                                        letterSpacing: 0.0,
-                                                                                                      ),
-                                                                                                ),
-                                                                                              ],
-                                                                                            ),
-                                                                                            Row(
-                                                                                              mainAxisSize: MainAxisSize.max,
-                                                                                              mainAxisAlignment: MainAxisAlignment.end,
-                                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                              children: [
-                                                                                                if (houseCardRestoranRecord.cartPay)
-                                                                                                  FaIcon(
-                                                                                                    FontAwesomeIcons.solidCreditCard,
-                                                                                                    color: FlutterFlowTheme.of(context).primary,
-                                                                                                    size: 22.0,
-                                                                                                  ),
-                                                                                                if (houseCardRestoranRecord.cash)
-                                                                                                  FaIcon(
-                                                                                                    FontAwesomeIcons.wallet,
-                                                                                                    color: FlutterFlowTheme.of(context).primary,
-                                                                                                    size: 22.0,
-                                                                                                  ),
-                                                                                                if (houseCardRestoranRecord.courier)
-                                                                                                  FaIcon(
-                                                                                                    FontAwesomeIcons.shoppingBasket,
-                                                                                                    color: FlutterFlowTheme.of(context).primary,
-                                                                                                    size: 20.0,
-                                                                                                  ),
-                                                                                                if (houseCardRestoranRecord.qrCode)
-                                                                                                  Icon(
-                                                                                                    Icons.qr_code,
-                                                                                                    color: FlutterFlowTheme.of(context).primary,
-                                                                                                    size: 23.0,
-                                                                                                  ),
-                                                                                              ].divide(SizedBox(width: 5.0)),
-                                                                                            ),
-                                                                                          ],
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                              );
-                                                                            },
-                                                                          ),
-                                                                        );
-                                                                      }),
-                                                                    );
-                                                                  },
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
                                                 ],
                                               ),
                                             ),
@@ -1981,13 +1566,13 @@ class _FavourWidgetState extends State<FavourWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Для этого действия пожплуйста войдите в свой профиль или зарегистрируйтесь',
+                                'Пожалуйста, войдите в свой аккаунт или зарегистрируйтесь.',
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Montserrat',
-                                      fontSize: 28.0,
+                                      fontSize: 24.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -2003,6 +1588,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                       child: FFButtonWidget(
                                         onPressed: () async {
                                           Navigator.pop(context);
+                                          context.safePop();
                                         },
                                         text: 'Закрыть',
                                         options: FFButtonOptions(
@@ -2032,7 +1618,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                           elevation: 0.0,
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryBackground,
+                                                .grayIcon,
                                             width: 1.0,
                                           ),
                                           borderRadius:
@@ -2043,7 +1629,7 @@ class _FavourWidgetState extends State<FavourWidget> {
                                     Expanded(
                                       child: FFButtonWidget(
                                         onPressed: () async {
-                                          context.pushNamed('Auth_login');
+                                          context.pushNamed('login');
                                         },
                                         text: 'Войти',
                                         options: FFButtonOptions(

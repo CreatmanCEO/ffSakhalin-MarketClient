@@ -9,6 +9,8 @@ import '/backend/backend.dart';
 
 import '/auth/base_auth_user_provider.dart';
 
+import '/backend/push_notifications/push_notifications_handler.dart'
+    show PushNotificationsHandler;
 import '/index.dart';
 import '/main.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -75,182 +77,258 @@ class AppStateNotifier extends ChangeNotifier {
   }
 }
 
-GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
+GoRouter createRouter(AppStateNotifier appStateNotifier, [Widget? entryPage]) =>
+    GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? NavBarPage() : HomeScreenWidget(),
+          appStateNotifier.loggedIn ? entryPage ?? NavBarPage() : MainWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : HomeScreenWidget(),
-        ),
-        FFRoute(
-          name: 'authScreen',
-          path: '/authScreen',
-          builder: (context, params) => AuthScreenWidget(),
-        ),
-        FFRoute(
-          name: 'onboardingScreen',
-          path: '/onboardingScreen',
-          builder: (context, params) => OnboardingScreenWidget(),
-        ),
-        FFRoute(
-          name: 'exploreScreen',
-          path: '/exploreScreen',
-          builder: (context, params) => ExploreScreenWidget(),
-        ),
-        FFRoute(
-          name: 'homeScreen',
-          path: '/SahEda',
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'homeScreen')
-              : HomeScreenWidget(),
-        ),
-        FFRoute(
-          name: 'profileScreen',
-          path: '/profileScreen',
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'profileScreen')
-              : ProfileScreenWidget(),
-        ),
-        FFRoute(
-          name: 'OrderChekout',
-          path: '/foodBooked',
-          builder: (context, params) => OrderChekoutWidget(),
-        ),
-        FFRoute(
-          name: 'Auth_login',
-          path: '/authLogin',
-          builder: (context, params) => AuthLoginWidget(),
-        ),
-        FFRoute(
-          name: 'Auth_register',
-          path: '/authRegister',
-          builder: (context, params) => AuthRegisterWidget(),
-        ),
-        FFRoute(
-          name: 'Auth_SMS_code',
-          path: '/authSMSCode',
-          builder: (context, params) => AuthSMSCodeWidget(),
-        ),
-        FFRoute(
-          name: 'Forgot_Password',
-          path: '/forgotPassword',
-          builder: (context, params) => ForgotPasswordWidget(),
-        ),
-        FFRoute(
-          name: 'Auth_registerCopy',
-          path: '/authRegisterCopy',
-          builder: (context, params) => AuthRegisterCopyWidget(),
-        ),
-        FFRoute(
-          name: 'profileOrderList',
-          path: '/profileOrderList',
-          builder: (context, params) => ProfileOrderListWidget(),
-        ),
-        FFRoute(
-          name: 'profileOrder',
-          path: '/profileOrder',
-          asyncParams: {
-            'currentOrder': getDoc(['Order'], OrderRecord.fromSnapshot),
-            'restoran': getDoc(['restoran'], RestoranRecord.fromSnapshot),
-          },
-          builder: (context, params) => ProfileOrderWidget(
-            currentOrder: params.getParam(
-              'currentOrder',
-              ParamType.Document,
+          builder: (context, _) => appStateNotifier.loggedIn
+              ? entryPage ?? NavBarPage()
+              : MainWidget(),
+          routes: [
+            FFRoute(
+              name: 'profile',
+              path: 'profile',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'profile')
+                  : ProfileWidget(),
             ),
-            restoran: params.getParam(
-              'restoran',
-              ParamType.Document,
+            FFRoute(
+              name: 'checkout',
+              path: 'checkout',
+              builder: (context, params) => CheckoutWidget(),
             ),
-          ),
-        ),
-        FFRoute(
-          name: 'profileMyAddresses',
-          path: '/profileMyAddresses',
-          builder: (context, params) => ProfileMyAddressesWidget(),
-        ),
-        FFRoute(
-          name: 'profileNewAddress',
-          path: '/profileNewAddress',
-          builder: (context, params) => ProfileNewAddressWidget(),
-        ),
-        FFRoute(
-          name: 'profileNewOrder',
-          path: '/profileNewOrder',
-          asyncParams: {
-            'currentCurtItem':
-                getDocList(['cart_items'], CartItemsRecord.fromSnapshot),
-            'restoran': getDoc(['restoran'], RestoranRecord.fromSnapshot),
-          },
-          builder: (context, params) => ProfileNewOrderWidget(
-            currentCurtItem: params.getParam<CartItemsRecord>(
-              'currentCurtItem',
-              ParamType.Document,
-              isList: true,
+            FFRoute(
+              name: 'orderList',
+              path: 'orderList',
+              builder: (context, params) => OrderListWidget(),
             ),
-            restoran: params.getParam(
-              'restoran',
-              ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'favour',
-          path: '/favour',
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'favour')
-              : FavourWidget(),
-        ),
-        FFRoute(
-          name: 'cart',
-          path: '/cart',
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'cart')
-              : CartWidget(
-                  back: params.getParam(
-                    'back',
-                    ParamType.bool,
-                  ),
+            FFRoute(
+              name: 'currentOrder',
+              path: 'currentOrder',
+              asyncParams: {
+                'currentOrder': getDoc(['Order'], OrderRecord.fromSnapshot),
+                'restoran': getDoc(['restoran'], RestoranRecord.fromSnapshot),
+              },
+              builder: (context, params) => CurrentOrderWidget(
+                currentOrder: params.getParam(
+                  'currentOrder',
+                  ParamType.Document,
                 ),
-        ),
-        FFRoute(
-          name: 'profileReviewList',
-          path: '/profileReviewList',
-          builder: (context, params) => ProfileReviewListWidget(),
-        ),
-        FFRoute(
-          name: 'smsCode',
-          path: '/smsCode',
-          builder: (context, params) => SmsCodeWidget(),
-        ),
-        FFRoute(
-          name: 'previevie',
-          path: '/previevie',
-          builder: (context, params) => PrevievieWidget(),
-        ),
-        FFRoute(
-          name: 'Place',
-          path: '/place',
-          asyncParams: {
-            'restoran': getDoc(['restoran'], RestoranRecord.fromSnapshot),
-          },
-          builder: (context, params) => PlaceWidget(
-            restoran: params.getParam(
-              'restoran',
-              ParamType.Document,
+                restoran: params.getParam(
+                  'restoran',
+                  ParamType.Document,
+                ),
+                ref: params.getParam(
+                  'ref',
+                  ParamType.bool,
+                ),
+              ),
             ),
-            otzyv: params.getParam(
-              'otzyv',
-              ParamType.bool,
+            FFRoute(
+              name: 'myAddresses',
+              path: 'myAddresses',
+              builder: (context, params) => MyAddressesWidget(),
             ),
-          ),
-        )
+            FFRoute(
+              name: 'newOrder',
+              path: 'newOrder',
+              asyncParams: {
+                'currentCurtItem':
+                    getDocList(['cart_items'], CartItemsRecord.fromSnapshot),
+                'restoran': getDoc(['restoran'], RestoranRecord.fromSnapshot),
+              },
+              builder: (context, params) => NewOrderWidget(
+                currentCurtItem: params.getParam<CartItemsRecord>(
+                  'currentCurtItem',
+                  ParamType.Document,
+                  isList: true,
+                ),
+                restoran: params.getParam(
+                  'restoran',
+                  ParamType.Document,
+                ),
+              ),
+            ),
+            FFRoute(
+              name: 'favour',
+              path: 'favour',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'favour')
+                  : FavourWidget(),
+            ),
+            FFRoute(
+              name: 'cart',
+              path: 'cart',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'cart')
+                  : CartWidget(
+                      back: params.getParam(
+                        'back',
+                        ParamType.bool,
+                      ),
+                    ),
+            ),
+            FFRoute(
+              name: 'myReviews',
+              path: 'myReviews',
+              builder: (context, params) => MyReviewsWidget(),
+            ),
+            FFRoute(
+              name: 'load',
+              path: 'load',
+              builder: (context, params) => LoadWidget(),
+            ),
+            FFRoute(
+              name: 'place',
+              path: 'place',
+              asyncParams: {
+                'restoran': getDoc(['restoran'], RestoranRecord.fromSnapshot),
+              },
+              builder: (context, params) => PlaceWidget(
+                restoran: params.getParam(
+                  'restoran',
+                  ParamType.Document,
+                ),
+                otzyv: params.getParam(
+                  'otzyv',
+                  ParamType.bool,
+                ),
+              ),
+            ),
+            FFRoute(
+              name: 'main',
+              path: 'main',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'main')
+                  : MainWidget(),
+            ),
+            FFRoute(
+              name: 'category',
+              path: 'category',
+              builder: (context, params) => CategoryWidget(
+                categoryName: params.getParam(
+                  'categoryName',
+                  ParamType.String,
+                ),
+              ),
+            ),
+            FFRoute(
+              name: 'search',
+              path: 'search',
+              builder: (context, params) => SearchWidget(),
+            ),
+            FFRoute(
+              name: 'allCategory',
+              path: 'allCategory',
+              builder: (context, params) => AllCategoryWidget(),
+            ),
+            FFRoute(
+              name: 'saleMob',
+              path: 'saleMob',
+              builder: (context, params) => SaleMobWidget(),
+            ),
+            FFRoute(
+              name: 'allRating',
+              path: 'allRating',
+              builder: (context, params) => AllRatingWidget(),
+            ),
+            FFRoute(
+              name: 'allCategoryWeb',
+              path: 'allCategoryWeb',
+              builder: (context, params) => AllCategoryWebWidget(),
+            ),
+            FFRoute(
+              name: 'searchWeb',
+              path: 'searchWeb',
+              builder: (context, params) => SearchWebWidget(),
+            ),
+            FFRoute(
+              name: 'categoryWeb',
+              path: 'categoryWeb',
+              builder: (context, params) => CategoryWebWidget(
+                categoryName: params.getParam(
+                  'categoryName',
+                  ParamType.String,
+                ),
+              ),
+            ),
+            FFRoute(
+              name: 'installAppInfo',
+              path: 'installAppInfo',
+              builder: (context, params) => InstallAppInfoWidget(),
+            ),
+            FFRoute(
+              name: 'ratingWeb',
+              path: 'ratingWeb',
+              builder: (context, params) => RatingWebWidget(),
+            ),
+            FFRoute(
+              name: 'sale',
+              path: 'sale',
+              builder: (context, params) => SaleWidget(),
+            ),
+            FFRoute(
+              name: 'currentItem',
+              path: 'currentItem',
+              asyncParams: {
+                'currentTovar':
+                    getDoc(['restoran', 'menu'], MenuRecord.fromSnapshot),
+              },
+              builder: (context, params) => CurrentItemWidget(
+                currentTovar: params.getParam(
+                  'currentTovar',
+                  ParamType.Document,
+                ),
+                otzyv: params.getParam(
+                  'otzyv',
+                  ParamType.bool,
+                ),
+              ),
+            ),
+            FFRoute(
+              name: 'login',
+              path: 'login',
+              builder: (context, params) => LoginWidget(),
+            ),
+            FFRoute(
+              name: 'smsLogin',
+              path: 'smsLogin',
+              builder: (context, params) => SmsLoginWidget(),
+            ),
+            FFRoute(
+              name: 'smsReg',
+              path: 'smsReg',
+              builder: (context, params) => SmsRegWidget(),
+            ),
+            FFRoute(
+              name: 'privacy_policy',
+              path: 'privacy_policy',
+              builder: (context, params) => PrivacyPolicyWidget(),
+            ),
+            FFRoute(
+              name: 'rules',
+              path: 'rules',
+              builder: (context, params) => RulesWidget(),
+            ),
+            FFRoute(
+              name: 'favourWeb',
+              path: 'favourWeb',
+              builder: (context, params) => FavourWebWidget(),
+            ),
+            FFRoute(
+              name: 'qrPage',
+              path: 'qrPage',
+              builder: (context, params) => QrPageWidget(),
+            )
+          ].map((r) => r.toRoute(appStateNotifier)).toList(),
+        ),
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
 
@@ -420,7 +498,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/SahEda';
+            return '/main';
           }
           return null;
         },
@@ -434,16 +512,14 @@ class FFRoute {
                 )
               : builder(context, ffParams);
           final child = appStateNotifier.loading
-              ? isWeb
-                  ? Container()
-                  : Container(
-                      color: Colors.transparent,
-                      child: Image.asset(
-                        'assets/images/1_0_Splash.png',
-                        fit: BoxFit.cover,
-                      ),
-                    )
-              : page;
+              ? Container(
+                  color: Color(0x00F84F0E),
+                  child: Image.asset(
+                    'assets/images/1_0_Splash.png',
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : PushNotificationsHandler(child: page);
 
           final transitionInfo = state.transitionInfo;
           return transitionInfo.hasTransition

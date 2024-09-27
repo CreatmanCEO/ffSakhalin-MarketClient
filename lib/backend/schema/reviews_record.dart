@@ -81,6 +81,16 @@ class ReviewsRecord extends FirestoreRecord {
   String get restoranName => _restoranName ?? '';
   bool hasRestoranName() => _restoranName != null;
 
+  // "Restoran" field.
+  bool? _restoran;
+  bool get restoran => _restoran ?? false;
+  bool hasRestoran() => _restoran != null;
+
+  // "Menu" field.
+  bool? _menu;
+  bool get menu => _menu ?? false;
+  bool hasMenu() => _menu != null;
+
   void _initializeFields() {
     _restoranID = snapshotData['RestoranID'] as DocumentReference?;
     _menuID = snapshotData['MenuID'] as DocumentReference?;
@@ -95,6 +105,8 @@ class ReviewsRecord extends FirestoreRecord {
     _otvetData = snapshotData['otvetData'] as DateTime?;
     _numberOrder = castToType<int>(snapshotData['numberOrder']);
     _restoranName = snapshotData['restoranName'] as String?;
+    _restoran = snapshotData['Restoran'] as bool?;
+    _menu = snapshotData['Menu'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -144,6 +156,8 @@ Map<String, dynamic> createReviewsRecordData({
   DateTime? otvetData,
   int? numberOrder,
   String? restoranName,
+  bool? restoran,
+  bool? menu,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -159,6 +173,8 @@ Map<String, dynamic> createReviewsRecordData({
       'otvetData': otvetData,
       'numberOrder': numberOrder,
       'restoranName': restoranName,
+      'Restoran': restoran,
+      'Menu': menu,
     }.withoutNulls,
   );
 
@@ -183,7 +199,9 @@ class ReviewsRecordDocumentEquality implements Equality<ReviewsRecord> {
         e1?.otvet == e2?.otvet &&
         e1?.otvetData == e2?.otvetData &&
         e1?.numberOrder == e2?.numberOrder &&
-        e1?.restoranName == e2?.restoranName;
+        e1?.restoranName == e2?.restoranName &&
+        e1?.restoran == e2?.restoran &&
+        e1?.menu == e2?.menu;
   }
 
   @override
@@ -200,7 +218,9 @@ class ReviewsRecordDocumentEquality implements Equality<ReviewsRecord> {
         e?.otvet,
         e?.otvetData,
         e?.numberOrder,
-        e?.restoranName
+        e?.restoranName,
+        e?.restoran,
+        e?.menu
       ]);
 
   @override

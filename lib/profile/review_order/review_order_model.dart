@@ -7,6 +7,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'review_order_widget.dart' show ReviewOrderWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -39,6 +40,7 @@ class ReviewOrderModel extends FlutterFlowModel<ReviewOrderWidget> {
   TextEditingController? textOrderReviewTextController;
   String? Function(BuildContext, String?)?
       textOrderReviewTextControllerValidator;
+  List<ReviewsRecord>? containerPreviousSnapshot;
   // Stores action output result for [Backend Call - Create Document] action in Button widget.
   ReviewsRecord? action1Copy;
   // State field(s) for TextItemReview widget.

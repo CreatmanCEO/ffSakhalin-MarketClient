@@ -189,6 +189,71 @@ List<RestoranRecord> filterRestaurantsByNameClose(
   return filteredRestaurants;
 }
 
+List<RestoranRecord> newfilterRestaurantsByName(
+  List<RestoranRecord> allRestaurants,
+  bool sortByName,
+  bool sortByRating,
+  bool filterByCartPay,
+  bool filterByPickup,
+) {
+  DateTime now = DateTime.now();
+  TimeOfDay currentTime = TimeOfDay(hour: now.hour, minute: now.minute);
+
+  List<RestoranRecord> filteredRestaurants = allRestaurants.where((restoran) {
+    bool matchesDeliveryOptions = false;
+
+    if (filterByCartPay || filterByPickup) {
+      // Изменяем условие, чтобы учитывать filterByPickup
+      if (filterByCartPay && restoran.cartPay) {
+        matchesDeliveryOptions = true;
+      }
+      if (filterByPickup && restoran.pickup) {
+        // Добавляем условие для filterByPickup
+        matchesDeliveryOptions = true;
+      }
+    } else {
+      matchesDeliveryOptions = true;
+    }
+
+    // Фильтрация по времени
+    bool matchesTime = false;
+    if (restoran.aroundTheClock == true) {
+      matchesTime = true;
+    } else if (restoran.timeStart != null && restoran.timeEnd != null) {
+      DateTime timeStartDT = restoran.timeStart!;
+      DateTime timeEndDT = restoran.timeEnd!;
+
+      TimeOfDay timeStart = TimeOfDay.fromDateTime(timeStartDT);
+      TimeOfDay timeEnd = TimeOfDay.fromDateTime(timeEndDT);
+
+      bool isAfterStart = currentTime.hour > timeStart.hour ||
+          (currentTime.hour == timeStart.hour &&
+              currentTime.minute >= timeStart.minute);
+      bool isBeforeEnd = currentTime.hour < timeEnd.hour ||
+          (currentTime.hour == timeEnd.hour &&
+              currentTime.minute <= timeEnd.minute);
+
+      matchesTime = isAfterStart && isBeforeEnd;
+    } else {
+      matchesTime = true;
+    }
+
+    return matchesDeliveryOptions && matchesTime;
+  }).toList();
+
+  if (sortByRating) {
+    filteredRestaurants.sort((a, b) => b.rating.compareTo(a.rating));
+  } else if (sortByName) {
+    filteredRestaurants.sort((a, b) {
+      if (a.name == null) return 1;
+      if (b.name == null) return -1;
+      return a.name!.compareTo(b.name!);
+    });
+  }
+
+  return filteredRestaurants;
+}
+
 List<dynamic> groupDataByRestaurants(List<dynamic> cartItems) {
   Set<String> restaurantNames = {};
   List<Map<String, dynamic>> uniqueRestaurants = [];
@@ -207,6 +272,28 @@ List<dynamic> groupDataByRestaurants(List<dynamic> cartItems) {
   }
 
   return uniqueRestaurants;
+}
+
+List<MenuRecord>? filtrMenuSearch(
+  String? name,
+  List<MenuRecord>? allmenu,
+) {
+  // Если name пусто или null, возвращаем весь список
+  if (name == null || name.isEmpty) {
+    return allmenu;
+  }
+
+  // Фильтрация по названию и CategoryBluda
+  return allmenu?.where((menu) {
+    final matchesName = menu.name != null &&
+        menu.name!.toLowerCase().contains(name.toLowerCase());
+    final matchesCategory = menu.categoryBluda != null &&
+        menu.categoryBluda!.any(
+            (category) => category.toLowerCase().contains(name.toLowerCase()));
+
+    // Возвращаем true, если совпадает либо name, либо CategoryBluda
+    return matchesName || matchesCategory;
+  }).toList();
 }
 
 String? transferAndDeleteItemFirebase(CartItemsRecord? currentCartItem) {
@@ -306,4 +393,52 @@ bool? isRestaurantOutsideWorkingHours(RestoranRecord restoran) {
 
   // Если время работы не указано, возвращаем false
   return false;
+}
+
+List<MenuRecord> filterMenuByName(
+  List<MenuRecord> allMenuItems,
+  String? name,
+) {
+// Фильтруем элементы меню по имени, если строка поиска не пустая
+  if (name == null || name.isEmpty) {
+    return [];
+  }
+
+  List<MenuRecord> filteredMenuItems = allMenuItems.where((menuItem) {
+    bool matchesName = menuItem.name != null &&
+        menuItem.name!.toLowerCase().contains(name.toLowerCase());
+
+    return matchesName;
+  }).toList();
+
+  return filteredMenuItems;
+}
+
+List<RestoranRecord>? filtrRestoran(
+  String? name,
+  List<RestoranRecord>? allRestorans,
+) {
+  // Если name пусто, null или содержит менее 3 символов, возвращаем пустой список
+  if (name == null || name.isEmpty || name.length < 3) {
+    return [];
+  }
+
+  // Фильтрация по названию и категории кухни
+  return allRestorans?.where((restoran) {
+    final nameMatch = restoran.name != null &&
+        restoran.name!.toLowerCase().contains(name.toLowerCase());
+    final kitchenMatch = restoran.kategoryKitchen != null &&
+        restoran.kategoryKitchen!.any(
+            (kitchen) => kitchen.toLowerCase().contains(name.toLowerCase()));
+
+    return nameMatch || kitchenMatch;
+  }).toList();
+}
+
+double calculateAverageRating(List<int> ratings) {
+  if (ratings.isEmpty) {
+    return 0.0;
+  }
+  double sum = ratings.reduce((a, b) => a + b).toDouble();
+  return sum / ratings.length;
 }

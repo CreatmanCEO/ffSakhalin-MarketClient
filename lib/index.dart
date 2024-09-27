@@ -1,37 +1,36 @@
 // Export pages
-export '/profile/auth/auth_screen/auth_screen_widget.dart'
-    show AuthScreenWidget;
-export '/other/onboarding_screen/onboarding_screen_widget.dart'
-    show OnboardingScreenWidget;
-export '/other/explore_screen/explore_screen_widget.dart'
-    show ExploreScreenWidget;
-export '/main/home_screen/home_screen_widget.dart' show HomeScreenWidget;
-export '/profile/profile_screen/profile_screen_widget.dart'
-    show ProfileScreenWidget;
-export '/main/order_chekout/order_chekout_widget.dart' show OrderChekoutWidget;
-export '/profile/auth/auth_login/auth_login_widget.dart' show AuthLoginWidget;
-export '/profile/auth/auth_register/auth_register_widget.dart'
-    show AuthRegisterWidget;
-export '/profile/auth/auth_s_m_s_code/auth_s_m_s_code_widget.dart'
-    show AuthSMSCodeWidget;
-export '/profile/auth/forgot_password/forgot_password_widget.dart'
-    show ForgotPasswordWidget;
-export '/profile/auth/auth_register_copy/auth_register_copy_widget.dart'
-    show AuthRegisterCopyWidget;
-export '/profile/profile_order_list/profile_order_list_widget.dart'
-    show ProfileOrderListWidget;
-export '/profile/profile_order/profile_order_widget.dart'
-    show ProfileOrderWidget;
-export '/profile/profile_my_addresses/profile_my_addresses_widget.dart'
-    show ProfileMyAddressesWidget;
-export '/profile/profile_new_address/profile_new_address_widget.dart'
-    show ProfileNewAddressWidget;
-export '/profile/profile_new_order/profile_new_order_widget.dart'
-    show ProfileNewOrderWidget;
+export '/profile/profile/profile_widget.dart' show ProfileWidget;
+export '/main/checkout/checkout_widget.dart' show CheckoutWidget;
+export '/profile/order_list/order_list_widget.dart' show OrderListWidget;
+export '/profile/current_order/current_order_widget.dart'
+    show CurrentOrderWidget;
+export '/profile/my_addresses/my_addresses_widget.dart' show MyAddressesWidget;
+export '/profile/new_order/new_order_widget.dart' show NewOrderWidget;
 export '/main/favour/favour_widget.dart' show FavourWidget;
 export '/main/cart/cart_widget.dart' show CartWidget;
-export '/profile/profile_review_list/profile_review_list_widget.dart'
-    show ProfileReviewListWidget;
-export '/sms_code/sms_code_widget.dart' show SmsCodeWidget;
-export '/profile/auth/previevie/previevie_widget.dart' show PrevievieWidget;
+export '/profile/my_reviews/my_reviews_widget.dart' show MyReviewsWidget;
+export '/profile/load/load_widget.dart' show LoadWidget;
 export '/main/place/place_widget.dart' show PlaceWidget;
+export '/main/main/main_widget.dart' show MainWidget;
+export '/main/category/category_widget.dart' show CategoryWidget;
+export '/main/search/search_widget.dart' show SearchWidget;
+export '/main/all_category/all_category_widget.dart' show AllCategoryWidget;
+export '/main/sale_mob/sale_mob_widget.dart' show SaleMobWidget;
+export '/main/all_rating/all_rating_widget.dart' show AllRatingWidget;
+export '/main/all_category_web/all_category_web_widget.dart'
+    show AllCategoryWebWidget;
+export '/main/search_web/search_web_widget.dart' show SearchWebWidget;
+export '/main/category_web/category_web_widget.dart' show CategoryWebWidget;
+export '/main/install_app_info/install_app_info_widget.dart'
+    show InstallAppInfoWidget;
+export '/main/rating_web/rating_web_widget.dart' show RatingWebWidget;
+export '/main/sale/sale_widget.dart' show SaleWidget;
+export '/main/current_item/current_item_widget.dart' show CurrentItemWidget;
+export '/login/login/login_widget.dart' show LoginWidget;
+export '/login/sms_login/sms_login_widget.dart' show SmsLoginWidget;
+export '/login/sms_reg/sms_reg_widget.dart' show SmsRegWidget;
+export '/login/privacy_policy/privacy_policy_widget.dart'
+    show PrivacyPolicyWidget;
+export '/login/rules/rules_widget.dart' show RulesWidget;
+export '/main/favour_web/favour_web_widget.dart' show FavourWebWidget;
+export '/qr_page/qr_page_widget.dart' show QrPageWidget;

@@ -96,11 +96,6 @@ class RestoranRecord extends FirestoreRecord {
   String get adress => _adress ?? '';
   bool hasAdress() => _adress != null;
 
-  // "status" field.
-  bool? _status;
-  bool get status => _status ?? false;
-  bool hasStatus() => _status != null;
-
   // "EmailAdmin" field.
   String? _emailAdmin;
   String get emailAdmin => _emailAdmin ?? '';
@@ -151,16 +146,6 @@ class RestoranRecord extends FirestoreRecord {
   String get openingHours => _openingHours ?? '';
   bool hasOpeningHours() => _openingHours != null;
 
-  // "StatusTXT" field.
-  String? _statusTXT;
-  String get statusTXT => _statusTXT ?? '';
-  bool hasStatusTXT() => _statusTXT != null;
-
-  // "rating" field.
-  double? _rating;
-  double get rating => _rating ?? 0.0;
-  bool hasRating() => _rating != null;
-
   // "City" field.
   String? _city;
   String get city => _city ?? '';
@@ -206,6 +191,36 @@ class RestoranRecord extends FirestoreRecord {
   List<DocumentReference> get positionMenuRef => _positionMenuRef ?? const [];
   bool hasPositionMenuRef() => _positionMenuRef != null;
 
+  // "moderationList" field.
+  List<DocumentReference>? _moderationList;
+  List<DocumentReference> get moderationList => _moderationList ?? const [];
+  bool hasModerationList() => _moderationList != null;
+
+  // "countRating" field.
+  int? _countRating;
+  int get countRating => _countRating ?? 0;
+  bool hasCountRating() => _countRating != null;
+
+  // "rating" field.
+  double? _rating;
+  double get rating => _rating ?? 0.0;
+  bool hasRating() => _rating != null;
+
+  // "moderationSort" field.
+  int? _moderationSort;
+  int get moderationSort => _moderationSort ?? 0;
+  bool hasModerationSort() => _moderationSort != null;
+
+  // "is_closed_until_tomorrow" field.
+  bool? _isClosedUntilTomorrow;
+  bool get isClosedUntilTomorrow => _isClosedUntilTomorrow ?? false;
+  bool hasIsClosedUntilTomorrow() => _isClosedUntilTomorrow != null;
+
+  // "break_end_time" field.
+  DateTime? _breakEndTime;
+  DateTime? get breakEndTime => _breakEndTime;
+  bool hasBreakEndTime() => _breakEndTime != null;
+
   void _initializeFields() {
     _name = snapshotData['name'] as String?;
     _logo = snapshotData['logo'] as String?;
@@ -223,7 +238,6 @@ class RestoranRecord extends FirestoreRecord {
     _cash = snapshotData['cash'] as bool?;
     _qrCode = snapshotData['qrCode'] as bool?;
     _adress = snapshotData['Adress'] as String?;
-    _status = snapshotData['status'] as bool?;
     _emailAdmin = snapshotData['EmailAdmin'] as String?;
     _displayName = snapshotData['display_name'] as String?;
     _photoUrl = snapshotData['photo_url'] as String?;
@@ -234,8 +248,6 @@ class RestoranRecord extends FirestoreRecord {
     _visible = snapshotData['visible'] as bool?;
     _phoneOrg = snapshotData['PhoneOrg'] as String?;
     _openingHours = snapshotData['OpeningHours'] as String?;
-    _statusTXT = snapshotData['StatusTXT'] as String?;
-    _rating = castToType<double>(snapshotData['rating']);
     _city = snapshotData['City'] as String?;
     _payvariable = getDataList(snapshotData['payvariable']);
     _reviews = getDataList(snapshotData['reviews']);
@@ -245,6 +257,12 @@ class RestoranRecord extends FirestoreRecord {
     _timeEnd = snapshotData['timeEnd'] as DateTime?;
     _aroundTheClock = snapshotData['aroundTheClock'] as bool?;
     _positionMenuRef = getDataList(snapshotData['positionMenuRef']);
+    _moderationList = getDataList(snapshotData['moderationList']);
+    _countRating = castToType<int>(snapshotData['countRating']);
+    _rating = castToType<double>(snapshotData['rating']);
+    _moderationSort = castToType<int>(snapshotData['moderationSort']);
+    _isClosedUntilTomorrow = snapshotData['is_closed_until_tomorrow'] as bool?;
+    _breakEndTime = snapshotData['break_end_time'] as DateTime?;
   }
 
   static CollectionReference get collection =>
@@ -297,7 +315,6 @@ Map<String, dynamic> createRestoranRecordData({
   bool? cash,
   bool? qrCode,
   String? adress,
-  bool? status,
   String? emailAdmin,
   String? displayName,
   String? photoUrl,
@@ -307,12 +324,15 @@ Map<String, dynamic> createRestoranRecordData({
   bool? visible,
   String? phoneOrg,
   String? openingHours,
-  String? statusTXT,
-  double? rating,
   String? city,
   DateTime? timeStart,
   DateTime? timeEnd,
   bool? aroundTheClock,
+  int? countRating,
+  double? rating,
+  int? moderationSort,
+  bool? isClosedUntilTomorrow,
+  DateTime? breakEndTime,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -331,7 +351,6 @@ Map<String, dynamic> createRestoranRecordData({
       'cash': cash,
       'qrCode': qrCode,
       'Adress': adress,
-      'status': status,
       'EmailAdmin': emailAdmin,
       'display_name': displayName,
       'photo_url': photoUrl,
@@ -341,12 +360,15 @@ Map<String, dynamic> createRestoranRecordData({
       'visible': visible,
       'PhoneOrg': phoneOrg,
       'OpeningHours': openingHours,
-      'StatusTXT': statusTXT,
-      'rating': rating,
       'City': city,
       'timeStart': timeStart,
       'timeEnd': timeEnd,
       'aroundTheClock': aroundTheClock,
+      'countRating': countRating,
+      'rating': rating,
+      'moderationSort': moderationSort,
+      'is_closed_until_tomorrow': isClosedUntilTomorrow,
+      'break_end_time': breakEndTime,
     }.withoutNulls,
   );
 
@@ -375,7 +397,6 @@ class RestoranRecordDocumentEquality implements Equality<RestoranRecord> {
         e1?.cash == e2?.cash &&
         e1?.qrCode == e2?.qrCode &&
         e1?.adress == e2?.adress &&
-        e1?.status == e2?.status &&
         e1?.emailAdmin == e2?.emailAdmin &&
         e1?.displayName == e2?.displayName &&
         e1?.photoUrl == e2?.photoUrl &&
@@ -386,8 +407,6 @@ class RestoranRecordDocumentEquality implements Equality<RestoranRecord> {
         e1?.visible == e2?.visible &&
         e1?.phoneOrg == e2?.phoneOrg &&
         e1?.openingHours == e2?.openingHours &&
-        e1?.statusTXT == e2?.statusTXT &&
-        e1?.rating == e2?.rating &&
         e1?.city == e2?.city &&
         listEquality.equals(e1?.payvariable, e2?.payvariable) &&
         listEquality.equals(e1?.reviews, e2?.reviews) &&
@@ -396,7 +415,13 @@ class RestoranRecordDocumentEquality implements Equality<RestoranRecord> {
         e1?.timeStart == e2?.timeStart &&
         e1?.timeEnd == e2?.timeEnd &&
         e1?.aroundTheClock == e2?.aroundTheClock &&
-        listEquality.equals(e1?.positionMenuRef, e2?.positionMenuRef);
+        listEquality.equals(e1?.positionMenuRef, e2?.positionMenuRef) &&
+        listEquality.equals(e1?.moderationList, e2?.moderationList) &&
+        e1?.countRating == e2?.countRating &&
+        e1?.rating == e2?.rating &&
+        e1?.moderationSort == e2?.moderationSort &&
+        e1?.isClosedUntilTomorrow == e2?.isClosedUntilTomorrow &&
+        e1?.breakEndTime == e2?.breakEndTime;
   }
 
   @override
@@ -417,7 +442,6 @@ class RestoranRecordDocumentEquality implements Equality<RestoranRecord> {
         e?.cash,
         e?.qrCode,
         e?.adress,
-        e?.status,
         e?.emailAdmin,
         e?.displayName,
         e?.photoUrl,
@@ -428,8 +452,6 @@ class RestoranRecordDocumentEquality implements Equality<RestoranRecord> {
         e?.visible,
         e?.phoneOrg,
         e?.openingHours,
-        e?.statusTXT,
-        e?.rating,
         e?.city,
         e?.payvariable,
         e?.reviews,
@@ -438,7 +460,13 @@ class RestoranRecordDocumentEquality implements Equality<RestoranRecord> {
         e?.timeStart,
         e?.timeEnd,
         e?.aroundTheClock,
-        e?.positionMenuRef
+        e?.positionMenuRef,
+        e?.moderationList,
+        e?.countRating,
+        e?.rating,
+        e?.moderationSort,
+        e?.isClosedUntilTomorrow,
+        e?.breakEndTime
       ]);
 
   @override

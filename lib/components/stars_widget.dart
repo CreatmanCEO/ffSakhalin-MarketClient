@@ -35,7 +35,7 @@ class _StarsWidgetState extends State<StarsWidget> {
     super.initState();
     _model = createModel(context, () => StarsModel());
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -49,7 +49,7 @@ class _StarsWidgetState extends State<StarsWidget> {
   Widget build(BuildContext context) {
     return RatingBar.builder(
       onRatingUpdate: (newValue) =>
-          setState(() => _model.ratingBarValue = newValue),
+          safeSetState(() => _model.ratingBarValue = newValue),
       itemBuilder: (context, index) => Icon(
         Icons.star_rounded,
         color: FlutterFlowTheme.of(context).tertiary,

@@ -9,6 +9,10 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "delite",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "Date",
           "order": "DESCENDING"
         }
@@ -29,6 +33,20 @@
       ]
     },
     {
+      "collectionGroup": "Order",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "User",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "Date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "positionMenu",
       "queryScope": "COLLECTION",
       "fields": [
@@ -39,6 +57,120 @@
         {
           "fieldPath": "number",
           "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Category_of_restaurant_cuisine",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "rating",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "restoran",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "visible",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "rating",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "restoran",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "visible",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "kategoryKitchen",
+          "arrayConfig": "CONTAINS"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "fcm_tokens",
+      "fieldPath": "fcm_token",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "menu",
+      "fieldPath": "oldPrice",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "menu",
+      "fieldPath": "popular",
+      "indexes": [
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "menu",
+      "fieldPath": "oldPrice",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "menu",
+      "fieldPath": "popular",
+      "indexes": [
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "menu",
+      "fieldPath": "oldPrice",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "menu",
+      "fieldPath": "oldPrice",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
         }
       ]
     }

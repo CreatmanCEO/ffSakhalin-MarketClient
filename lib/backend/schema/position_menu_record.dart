@@ -41,12 +41,18 @@ class PositionMenuRecord extends FirestoreRecord {
   bool get close => _close ?? false;
   bool hasClose() => _close != null;
 
+  // "categoruy_menuRef" field.
+  DocumentReference? _categoruyMenuRef;
+  DocumentReference? get categoruyMenuRef => _categoruyMenuRef;
+  bool hasCategoruyMenuRef() => _categoruyMenuRef != null;
+
   void _initializeFields() {
     _name = snapshotData['name'] as String?;
     _uid = castToType<int>(snapshotData['uid']);
     _number = castToType<int>(snapshotData['number']);
     _restoran = snapshotData['restoran'] as DocumentReference?;
     _close = snapshotData['close'] as bool?;
+    _categoruyMenuRef = snapshotData['categoruy_menuRef'] as DocumentReference?;
   }
 
   static CollectionReference get collection =>
@@ -89,6 +95,7 @@ Map<String, dynamic> createPositionMenuRecordData({
   int? number,
   DocumentReference? restoran,
   bool? close,
+  DocumentReference? categoruyMenuRef,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -97,6 +104,7 @@ Map<String, dynamic> createPositionMenuRecordData({
       'number': number,
       'restoran': restoran,
       'close': close,
+      'categoruy_menuRef': categoruyMenuRef,
     }.withoutNulls,
   );
 
@@ -113,12 +121,13 @@ class PositionMenuRecordDocumentEquality
         e1?.uid == e2?.uid &&
         e1?.number == e2?.number &&
         e1?.restoran == e2?.restoran &&
-        e1?.close == e2?.close;
+        e1?.close == e2?.close &&
+        e1?.categoruyMenuRef == e2?.categoruyMenuRef;
   }
 
   @override
-  int hash(PositionMenuRecord? e) => const ListEquality()
-      .hash([e?.name, e?.uid, e?.number, e?.restoran, e?.close]);
+  int hash(PositionMenuRecord? e) => const ListEquality().hash(
+      [e?.name, e?.uid, e?.number, e?.restoran, e?.close, e?.categoruyMenuRef]);
 
   @override
   bool isValidKey(Object? o) => o is PositionMenuRecord;

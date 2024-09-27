@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /restoran/{document} {
       allow create: if true;
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if true;
       allow delete: if true;
     }
@@ -85,8 +85,8 @@ service cloud.firestore {
 
     match /reviews/{document} {
       allow create: if true;
-      allow read: if request.auth != null;
-      allow write: if false;
+      allow read: if true;
+      allow write: if true;
       allow delete: if false;
     }
 
@@ -104,13 +104,6 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    match /banner/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if true;
-    }
-
     match /restoran/{parent}/sound/{document} {
       allow create: if true;
       allow read: if true;
@@ -122,5 +115,61 @@ service cloud.firestore {
       allow read: if true;
     }
 
+
+    match /banner1/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /banner2/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /banner3/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /reports/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /blacklist/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /partners/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /instruction/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /TestList/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
   }
 }

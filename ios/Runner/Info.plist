@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>ShareEat</string>
+	<string>Сахалин-Маркет</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Sakh-Market-Klient</string>
+	<string>Sakhalin-Market</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 
@@ -37,10 +37,10 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>sakhmarketklient.com</string>
+        <string>sakhalin-market.ru</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>sakhmarketklient</string>
+        <string>sakhalinmarket</string>
         </array>
         </dict>
     </array>
@@ -54,10 +54,16 @@
 	<true/>
 
 	<key>NSCameraUsageDescription</key>
-    <string>In order to take a picture or video, this app requires permission to access the camera.</string>
+    <string>Для того что бы вы могли установить изображение вашего профиля, приложению требуется доступ к вашей камере</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>In order to upload data, this app requires permission to access the photo library.</string>
-
+    <string>Для того что бы вы могли установить изображение вашего профиля, приложению требуется доступ к вашей галерее</string>
+	<key>PermissionGroupNotification</key>
+    <string>Для отправки уведомлений об изменении статуса заказа, приложению необходимо разрешение на отправку уведомлений</string>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>remote-notification</string>
+    </array>
 
 
 	<key>UILaunchStoryboardName</key>

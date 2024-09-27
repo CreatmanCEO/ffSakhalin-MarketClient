@@ -23,6 +23,25 @@
           "other_platform_oauth_client": []
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722615212666:android:ff3bb49d0a7f1009c6b9c3",
+        "android_client_info": {
+          "package_name": "com.mycompany.sakhmarketKlient"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUz2nUMKCQFb4FjJWzQ_m5gKxfCEERQdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
   ],
   "configuration_version": "1"

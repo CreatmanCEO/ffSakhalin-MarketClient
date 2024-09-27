@@ -19,9 +19,12 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="ShareEat">
+  <meta name="apple-mobile-web-app-title" content="Сахалин-Маркет">
 
-  
+  <meta name="description" content="Быстрая доставка еды на Сахалине. Широкий выбор блюд из лучших ресторанов. Заказ онлайн 24/7. Свежие продукты, быстрая доставка по всему региону.">
+<meta name="keywords" content="доставка еды Сахалин, заказ еды онлайн, рестораны Сахалина, быстрая доставка, Южно-Сахалинск еда">
+<meta name="geo.region" content="RU-SAK">
+<meta name="geo.placename" content="Южно-Сахалинск">
 
   <meta name="robots" content="noindex" />
 
@@ -30,29 +33,24 @@
   
 
   <!-- Open Graph & SEO tags -->
-  <meta property="og:title" content="ShareEat" />
-  <meta property="og:description" content="Built with FlutterFlow." />
-  <meta property="og:image" content="/assets/assets/images/11zon_cropped-_3_-_2__(1).svg" /> 
-  <meta name="twitter:title" content="ShareEat" />
-  <meta name="twitter:description" content="Built with FlutterFlow." />
-  <meta name="twitter:image" content="/assets/assets/images/11zon_cropped-_3_-_2__(1).svg" />
+  <meta property="og:title" content="Сахалин-Маркет" />
+  <meta property="og:description" content="Доставка еды и товаров в Южно-Сахалинске" />
+  <meta property="og:image" content="/assets/assets/images/IconSakhMarket.png" /> 
+  <meta name="twitter:title" content="Сахалин-Маркет" />
+  <meta name="twitter:description" content="Доставка еды и товаров в Южно-Сахалинске" />
+  <meta name="twitter:image" content="/assets/assets/images/IconSakhMarket.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <title> ShareEat </title>
-  <meta name="description" content="Built with FlutterFlow." />
+  <title> Сахалин-Маркет </title>
+  <meta name="description" content="Доставка еды и товаров в Южно-Сахалинске" />
     
 
   <!-- Status Bar color in Safari browser (iOS) and PWA -->
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f84f0e">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#f84f0e">
 
   <link rel="manifest" href="manifest.json">
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
+  
   
 </head>
 <body>
@@ -62,22 +60,13 @@
   
   
   <script>
-    window.addEventListener('load', function (ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        entrypointUrl: 'main.dart.js',
-        serviceWorker: {
-          serviceWorkerUrl: 'flutter_service_worker.js?v=',
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: async function(engineInitializer) {
-          // Initialize the Flutter engine
-          let appRunner = await engineInitializer.initializeEngine({});
-          // Run the app
-          await appRunner.runApp();
-        }
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('flutter-first-frame', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js?v=');
       });
-    });
+    }
   </script>
+  <script src="main.dart.js" type="application/javascript"></script>
+
 </body>
 </html>

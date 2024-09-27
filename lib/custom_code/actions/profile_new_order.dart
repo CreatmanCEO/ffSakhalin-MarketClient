@@ -23,7 +23,6 @@ Future<void> profileNewOrder(
     String comment,
     String userEmail,
     String restoranName) async {
-  // Добавляем параметр restoranName
   try {
     // Получаем текущий порядковый номер для Order
     final orderCollection = FirebaseFirestore.instance.collection('Order');
@@ -61,18 +60,26 @@ Future<void> profileNewOrder(
           currentMonth, // Добавляем поле DateDD с текущим месяцем в формате MM
       'comment': comment, // Добавляем поле comment
       'UserEmail': userEmail, // Добавляем поле UserEmail
-      'restoranName': restoranName // Добавляем поле restoranName
+      'delite':
+          false, // Добавляем поле delite и устанавливаем его значение как false
+      'restoranName': restoranName, // Добавляем поле restoranName
+      'apiCallMade': false
     });
 
-    // Обновляем AppState nuberOrder и DateOrder
+    // Получаем ID нового заказа
+    String newOrderId = newOrderRef.id;
+
+    // Обновляем AppState nuberOrder, DateOrder и OrderID
     FFAppState().update(() {
       FFAppState().nuberOrder = currentOrderNumber.toString();
       FFAppState().DateOrder = DateTime.now();
+      FFAppState().OrderID = newOrderId; // Записываем ID нового заказа
     });
 
     // Логирование для проверки записи данных
     print('Order Number: ${FFAppState().nuberOrder}');
     print('Order Date: ${FFAppState().DateOrder}');
+    print('Order ID: ${FFAppState().OrderID}');
 
     List<DocumentReference> orderItemRefs =
         []; // Инициализация списка для ссылок на Order_item
@@ -137,5 +144,6 @@ Future<void> profileNewOrder(
     print('Ошибка: $e');
   }
 }
+
 // Set your action name, define your arguments and return parameter,
 // and then add the boilerplate code using the green button on the right!

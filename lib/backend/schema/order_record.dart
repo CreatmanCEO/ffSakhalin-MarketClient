@@ -111,6 +111,16 @@ class OrderRecord extends FirestoreRecord {
   String get userEmail => _userEmail ?? '';
   bool hasUserEmail() => _userEmail != null;
 
+  // "delite" field.
+  bool? _delite;
+  bool get delite => _delite ?? false;
+  bool hasDelite() => _delite != null;
+
+  // "apiCallMade" field.
+  bool? _apiCallMade;
+  bool get apiCallMade => _apiCallMade ?? false;
+  bool hasApiCallMade() => _apiCallMade != null;
+
   void _initializeFields() {
     _number = castToType<int>(snapshotData['Number']);
     _date = snapshotData['Date'] as DateTime?;
@@ -131,6 +141,8 @@ class OrderRecord extends FirestoreRecord {
     _dateDD = snapshotData['DateDD'] as String?;
     _restoranName = snapshotData['restoranName'] as String?;
     _userEmail = snapshotData['UserEmail'] as String?;
+    _delite = snapshotData['delite'] as bool?;
+    _apiCallMade = snapshotData['apiCallMade'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -185,6 +197,8 @@ Map<String, dynamic> createOrderRecordData({
   String? dateDD,
   String? restoranName,
   String? userEmail,
+  bool? delite,
+  bool? apiCallMade,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -206,6 +220,8 @@ Map<String, dynamic> createOrderRecordData({
       'DateDD': dateDD,
       'restoranName': restoranName,
       'UserEmail': userEmail,
+      'delite': delite,
+      'apiCallMade': apiCallMade,
     }.withoutNulls,
   );
 
@@ -236,7 +252,9 @@ class OrderRecordDocumentEquality implements Equality<OrderRecord> {
         e1?.comment == e2?.comment &&
         e1?.dateDD == e2?.dateDD &&
         e1?.restoranName == e2?.restoranName &&
-        e1?.userEmail == e2?.userEmail;
+        e1?.userEmail == e2?.userEmail &&
+        e1?.delite == e2?.delite &&
+        e1?.apiCallMade == e2?.apiCallMade;
   }
 
   @override
@@ -259,7 +277,9 @@ class OrderRecordDocumentEquality implements Equality<OrderRecord> {
         e?.comment,
         e?.dateDD,
         e?.restoranName,
-        e?.userEmail
+        e?.userEmail,
+        e?.delite,
+        e?.apiCallMade
       ]);
 
   @override

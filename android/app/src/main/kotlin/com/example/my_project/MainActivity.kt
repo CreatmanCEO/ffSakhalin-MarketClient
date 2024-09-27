@@ -1,4 +1,4 @@
-package com.mycompany.sakhmarket
+package com.mycompany.sakhmarketKlient
 
 import io.flutter.embedding.android.FlutterActivity
 
