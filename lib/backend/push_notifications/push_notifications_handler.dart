@@ -176,6 +176,13 @@ final parametersBuilderMap =
   'rules': ParameterData.none(),
   'favourWeb': ParameterData.none(),
   'qrPage': ParameterData.none(),
+  'placeCopy': (data) async => ParameterData(
+        allParams: {
+          'restoran': await getDocumentParameter<RestoranRecord>(
+              data, 'restoran', RestoranRecord.fromSnapshot),
+          'otzyv': getParameter<bool>(data, 'otzyv'),
+        },
+      ),
 };
 
 Map<String, dynamic> getInitialParameterData(Map<String, dynamic> data) {

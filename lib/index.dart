@@ -34,3 +34,4 @@ export '/login/privacy_policy/privacy_policy_widget.dart'
 export '/login/rules/rules_widget.dart' show RulesWidget;
 export '/main/favour_web/favour_web_widget.dart' show FavourWebWidget;
 export '/qr_page/qr_page_widget.dart' show QrPageWidget;
+export '/main/place_copy/place_copy_widget.dart' show PlaceCopyWidget;

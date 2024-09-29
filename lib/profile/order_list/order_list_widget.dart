@@ -392,29 +392,40 @@ class _OrderListWidgetState extends State<OrderListWidget> {
                                                                                 FontWeight.w500,
                                                                           ),
                                                                     ),
-                                                                    FlutterFlowIconButton(
-                                                                      borderRadius:
-                                                                          8.0,
-                                                                      buttonSize:
-                                                                          40.0,
-                                                                      fillColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .secondaryBackground,
-                                                                      icon:
-                                                                          FaIcon(
-                                                                        FontAwesomeIcons
-                                                                            .redoAlt,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primary,
-                                                                        size:
-                                                                            24.0,
+                                                                    if (responsiveVisibility(
+                                                                      context:
+                                                                          context,
+                                                                      phone:
+                                                                          false,
+                                                                      tablet:
+                                                                          false,
+                                                                      tabletLandscape:
+                                                                          false,
+                                                                      desktop:
+                                                                          false,
+                                                                    ))
+                                                                      FlutterFlowIconButton(
+                                                                        borderRadius:
+                                                                            8.0,
+                                                                        buttonSize:
+                                                                            40.0,
+                                                                        fillColor:
+                                                                            FlutterFlowTheme.of(context).secondaryBackground,
+                                                                        icon:
+                                                                            FaIcon(
+                                                                          FontAwesomeIcons
+                                                                              .redoAlt,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).primary,
+                                                                          size:
+                                                                              24.0,
+                                                                        ),
+                                                                        onPressed:
+                                                                            () async {
+                                                                          safeSetState(
+                                                                              () {});
+                                                                        },
                                                                       ),
-                                                                      onPressed:
-                                                                          () async {
-                                                                        safeSetState(
-                                                                            () {});
-                                                                      },
-                                                                    ),
                                                                   ],
                                                                 ),
                                                               ],

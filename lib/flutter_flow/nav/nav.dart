@@ -326,6 +326,23 @@ GoRouter createRouter(AppStateNotifier appStateNotifier, [Widget? entryPage]) =>
               name: 'qrPage',
               path: 'qrPage',
               builder: (context, params) => QrPageWidget(),
+            ),
+            FFRoute(
+              name: 'placeCopy',
+              path: 'placeCopy',
+              asyncParams: {
+                'restoran': getDoc(['restoran'], RestoranRecord.fromSnapshot),
+              },
+              builder: (context, params) => PlaceCopyWidget(
+                restoran: params.getParam(
+                  'restoran',
+                  ParamType.Document,
+                ),
+                otzyv: params.getParam(
+                  'otzyv',
+                  ParamType.bool,
+                ),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),

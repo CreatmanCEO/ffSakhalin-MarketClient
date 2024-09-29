@@ -22,11 +22,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'place_model.dart';
-export 'place_model.dart';
+import 'place_copy_model.dart';
+export 'place_copy_model.dart';
 
-class PlaceWidget extends StatefulWidget {
-  const PlaceWidget({
+class PlaceCopyWidget extends StatefulWidget {
+  const PlaceCopyWidget({
     super.key,
     required this.restoran,
     this.otzyv,
@@ -36,18 +36,18 @@ class PlaceWidget extends StatefulWidget {
   final bool? otzyv;
 
   @override
-  State<PlaceWidget> createState() => _PlaceWidgetState();
+  State<PlaceCopyWidget> createState() => _PlaceCopyWidgetState();
 }
 
-class _PlaceWidgetState extends State<PlaceWidget> {
-  late PlaceModel _model;
+class _PlaceCopyWidgetState extends State<PlaceCopyWidget> {
+  late PlaceCopyModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => PlaceModel());
+    _model = createModel(context, () => PlaceCopyModel());
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -2675,6 +2675,8 @@ class _PlaceWidgetState extends State<PlaceWidget> {
                                                                 padding:
                                                                     EdgeInsets
                                                                         .zero,
+                                                                shrinkWrap:
+                                                                    true,
                                                                 scrollDirection:
                                                                     Axis.horizontal,
                                                                 itemCount:
@@ -2804,18 +2806,31 @@ class _PlaceWidgetState extends State<PlaceWidget> {
                                                                           .toList())
                                                                   .toList();
 
-                                                              return SingleChildScrollView(
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: List.generate(
+                                                              return RefreshIndicator(
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primary,
+                                                                backgroundColor:
+                                                                    FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryBackground,
+                                                                onRefresh:
+                                                                    () async {},
+                                                                child: ListView
+                                                                    .builder(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .zero,
+                                                                  primary:
+                                                                      false,
+                                                                  scrollDirection:
+                                                                      Axis.vertical,
+                                                                  itemCount:
                                                                       bigCategory
                                                                           .length,
-                                                                      (bigCategoryIndex) {
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          bigCategoryIndex) {
                                                                     final bigCategoryItem =
                                                                         bigCategory[
                                                                             bigCategoryIndex];
@@ -2828,7 +2843,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
                                                                       child:
                                                                           Column(
                                                                         mainAxisSize:
-                                                                            MainAxisSize.max,
+                                                                            MainAxisSize.min,
                                                                         crossAxisAlignment:
                                                                             CrossAxisAlignment.start,
                                                                         children:
@@ -2869,156 +2884,75 @@ class _PlaceWidgetState extends State<PlaceWidget> {
                                                                               );
                                                                             },
                                                                           ),
-                                                                          if (responsiveVisibility(
-                                                                            context:
-                                                                                context,
-                                                                            tabletLandscape:
-                                                                                false,
-                                                                            desktop:
-                                                                                false,
-                                                                          ))
-                                                                            Builder(
-                                                                              builder: (context) {
-                                                                                final listProduct = containerMenuRecordList.where((e) => e.docRefCategoryMenu.contains(bigCategoryItem.categoruyMenuRef) && (bigCategoryItem.close != true)).toList();
+                                                                          Builder(
+                                                                            builder:
+                                                                                (context) {
+                                                                              final listProduct = containerMenuRecordList.where((e) => e.docRefCategoryMenu.contains(bigCategoryItem.categoruyMenuRef) && (bigCategoryItem.close != true)).toList();
 
-                                                                                return GridView.builder(
-                                                                                  padding: EdgeInsets.zero,
-                                                                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                                                    crossAxisCount: 2,
-                                                                                    crossAxisSpacing: 10.0,
-                                                                                    childAspectRatio: 0.68,
-                                                                                  ),
-                                                                                  primary: false,
-                                                                                  shrinkWrap: true,
-                                                                                  scrollDirection: Axis.vertical,
-                                                                                  itemCount: listProduct.length,
-                                                                                  itemBuilder: (context, listProductIndex) {
-                                                                                    final listProductItem = listProduct[listProductIndex];
-                                                                                    return InkWell(
-                                                                                      splashColor: Colors.transparent,
-                                                                                      focusColor: Colors.transparent,
-                                                                                      hoverColor: Colors.transparent,
-                                                                                      highlightColor: Colors.transparent,
-                                                                                      onTap: () async {
-                                                                                        if (MediaQuery.sizeOf(context).width <= 500.0) {
-                                                                                          context.pushNamed(
-                                                                                            'currentItem',
-                                                                                            queryParameters: {
-                                                                                              'currentTovar': serializeParam(
-                                                                                                listProductItem,
-                                                                                                ParamType.Document,
-                                                                                              ),
-                                                                                            }.withoutNulls,
-                                                                                            extra: <String, dynamic>{
-                                                                                              'currentTovar': listProductItem,
-                                                                                            },
-                                                                                          );
-                                                                                        } else {
-                                                                                          await showModalBottomSheet(
-                                                                                            isScrollControlled: true,
-                                                                                            backgroundColor: Colors.transparent,
-                                                                                            enableDrag: false,
-                                                                                            context: context,
-                                                                                            builder: (context) {
-                                                                                              return GestureDetector(
-                                                                                                onTap: () => FocusScope.of(context).unfocus(),
-                                                                                                child: Padding(
-                                                                                                  padding: MediaQuery.viewInsetsOf(context),
-                                                                                                  child: ItemWebWidget(
-                                                                                                    currentTovar: listProductItem,
-                                                                                                  ),
+                                                                              return Wrap(
+                                                                                spacing: 15.0,
+                                                                                runSpacing: 10.0,
+                                                                                alignment: WrapAlignment.start,
+                                                                                crossAxisAlignment: WrapCrossAlignment.start,
+                                                                                direction: Axis.horizontal,
+                                                                                runAlignment: WrapAlignment.start,
+                                                                                verticalDirection: VerticalDirection.down,
+                                                                                clipBehavior: Clip.none,
+                                                                                children: List.generate(listProduct.length, (listProductIndex) {
+                                                                                  final listProductItem = listProduct[listProductIndex];
+                                                                                  return InkWell(
+                                                                                    splashColor: Colors.transparent,
+                                                                                    focusColor: Colors.transparent,
+                                                                                    hoverColor: Colors.transparent,
+                                                                                    highlightColor: Colors.transparent,
+                                                                                    onTap: () async {
+                                                                                      if (MediaQuery.sizeOf(context).width <= 500.0) {
+                                                                                        context.pushNamed(
+                                                                                          'currentItem',
+                                                                                          queryParameters: {
+                                                                                            'currentTovar': serializeParam(
+                                                                                              listProductItem,
+                                                                                              ParamType.Document,
+                                                                                            ),
+                                                                                          }.withoutNulls,
+                                                                                          extra: <String, dynamic>{
+                                                                                            'currentTovar': listProductItem,
+                                                                                          },
+                                                                                        );
+                                                                                      } else {
+                                                                                        await showModalBottomSheet(
+                                                                                          isScrollControlled: true,
+                                                                                          backgroundColor: Colors.transparent,
+                                                                                          enableDrag: false,
+                                                                                          context: context,
+                                                                                          builder: (context) {
+                                                                                            return GestureDetector(
+                                                                                              onTap: () => FocusScope.of(context).unfocus(),
+                                                                                              child: Padding(
+                                                                                                padding: MediaQuery.viewInsetsOf(context),
+                                                                                                child: ItemWebWidget(
+                                                                                                  currentTovar: listProductItem,
                                                                                                 ),
-                                                                                              );
-                                                                                            },
-                                                                                          ).then((value) => safeSetState(() {}));
-                                                                                        }
-                                                                                      },
-                                                                                      child: ItemComponentWidget(
-                                                                                        key: Key('Keyd5o_${listProductIndex}_of_${listProduct.length}'),
-                                                                                        currentRestoran: widget!.restoran!,
-                                                                                        blockMenu: listProductItem,
-                                                                                      ),
-                                                                                    );
-                                                                                  },
-                                                                                );
-                                                                              },
-                                                                            ),
-                                                                          if (responsiveVisibility(
-                                                                            context:
-                                                                                context,
-                                                                            phone:
-                                                                                false,
-                                                                            tablet:
-                                                                                false,
-                                                                          ))
-                                                                            Builder(
-                                                                              builder: (context) {
-                                                                                final listProduct = containerMenuRecordList.where((e) => e.docRefCategoryMenu.contains(bigCategoryItem.categoruyMenuRef) && (bigCategoryItem.close != true)).toList();
-
-                                                                                return Wrap(
-                                                                                  spacing: 15.0,
-                                                                                  runSpacing: 10.0,
-                                                                                  alignment: WrapAlignment.start,
-                                                                                  crossAxisAlignment: WrapCrossAlignment.start,
-                                                                                  direction: Axis.horizontal,
-                                                                                  runAlignment: WrapAlignment.start,
-                                                                                  verticalDirection: VerticalDirection.down,
-                                                                                  clipBehavior: Clip.none,
-                                                                                  children: List.generate(listProduct.length, (listProductIndex) {
-                                                                                    final listProductItem = listProduct[listProductIndex];
-                                                                                    return InkWell(
-                                                                                      splashColor: Colors.transparent,
-                                                                                      focusColor: Colors.transparent,
-                                                                                      hoverColor: Colors.transparent,
-                                                                                      highlightColor: Colors.transparent,
-                                                                                      onTap: () async {
-                                                                                        if (MediaQuery.sizeOf(context).width <= 500.0) {
-                                                                                          context.pushNamed(
-                                                                                            'currentItem',
-                                                                                            queryParameters: {
-                                                                                              'currentTovar': serializeParam(
-                                                                                                listProductItem,
-                                                                                                ParamType.Document,
                                                                                               ),
-                                                                                            }.withoutNulls,
-                                                                                            extra: <String, dynamic>{
-                                                                                              'currentTovar': listProductItem,
-                                                                                            },
-                                                                                          );
-                                                                                        } else {
-                                                                                          await showModalBottomSheet(
-                                                                                            isScrollControlled: true,
-                                                                                            backgroundColor: Colors.transparent,
-                                                                                            enableDrag: false,
-                                                                                            context: context,
-                                                                                            builder: (context) {
-                                                                                              return GestureDetector(
-                                                                                                onTap: () => FocusScope.of(context).unfocus(),
-                                                                                                child: Padding(
-                                                                                                  padding: MediaQuery.viewInsetsOf(context),
-                                                                                                  child: ItemWebWidget(
-                                                                                                    currentTovar: listProductItem,
-                                                                                                  ),
-                                                                                                ),
-                                                                                              );
-                                                                                            },
-                                                                                          ).then((value) => safeSetState(() {}));
-                                                                                        }
-                                                                                      },
-                                                                                      child: ItemComponentWidget(
-                                                                                        key: Key('Keydv3_${listProductIndex}_of_${listProduct.length}'),
-                                                                                        blockMenu: listProductItem,
-                                                                                        currentRestoran: widget!.restoran!,
-                                                                                      ),
-                                                                                    );
-                                                                                  }),
-                                                                                );
-                                                                              },
-                                                                            ),
+                                                                                            );
+                                                                                          },
+                                                                                        ).then((value) => safeSetState(() {}));
+                                                                                      }
+                                                                                    },
+                                                                                    child: ItemComponentWidget(
+                                                                                      key: Key('Keyqnd_${listProductIndex}_of_${listProduct.length}'),
+                                                                                      blockMenu: listProductItem,
+                                                                                      currentRestoran: widget!.restoran!,
+                                                                                    ),
+                                                                                  );
+                                                                                }),
+                                                                              );
+                                                                            },
+                                                                          ),
                                                                         ].divide(SizedBox(height: 10.0)),
                                                                       ),
                                                                     );
-                                                                  }),
+                                                                  },
                                                                 ),
                                                               );
                                                             },
@@ -3122,7 +3056,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
                                                                             },
                                                                             child:
                                                                                 ItemComponentWidget(
-                                                                              key: Key('Key4us_${menuSaleIndex}_of_${menuSale.length}'),
+                                                                              key: Key('Keygxl_${menuSaleIndex}_of_${menuSale.length}'),
                                                                               blockMenu: menuSaleItem,
                                                                               currentRestoran: widget!.restoran!,
                                                                             ),
